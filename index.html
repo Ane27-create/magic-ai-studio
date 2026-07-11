@@ -12,8 +12,9 @@
     .logo span { background: linear-gradient(90deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .card { background: #0d0d16; border: 1px solid #1f1f2e; border-radius: 20px; padding: 20px; margin-bottom: 15px; }
     label { display: block; font-size: 12px; font-weight: 700; color: #888; margin-bottom: 8px; text-transform: uppercase; }
-    textarea, select { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #2d2d40; background: #151520; color: #fff; font: inherit; margin-bottom: 15px; }
+    textarea, select, input[type="file"] { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #2d2d40; background: #151520; color: #fff; font: inherit; margin-bottom: 15px; }
     .btn { width: 100%; padding: 16px; border: 0; border-radius: 15px; background: linear-gradient(90deg, #8b5cf6, #ec4899); color: white; font-weight: 800; cursor: pointer; transition: transform 0.2s; }
+    .btn.secondary { background: #2d2d40; margin-top: 0; }
     .btn:active { transform: scale(0.98); }
     .stage { min-height: 300px; display: flex; align-items: center; justify-content: center; background: #0a0a12; border-radius: 20px; overflow: hidden; text-align: center; color: #444; border: 1px solid #1f1f2e; }
     .stage img { max-width: 100%; }
@@ -27,18 +28,23 @@
 <div class="app">
     <div class="logo">✨ <span>Magic AI Studio</span></div>
     
+    <!-- Sección de Generación -->
     <div class="card">
-        <label>Describe tu visión</label>
-        <textarea id="prompt" placeholder="Ej: Un astronauta montando un caballo en Marte, estilo cyberpunk..."></textarea>
-        
-        <label>Formato</label>
+        <label>Generar desde cero</label>
+        <textarea id="prompt" placeholder="Ej: Un astronauta en Marte..."></textarea>
         <select id="size">
             <option value="1024,1024">Cuadrado (1:1)</option>
             <option value="768,1024">Vertical (3:4)</option>
-            <option value="1024,768">Horizontal (4:3)</option>
         </select>
-        
         <button class="btn" id="gen">✨ Generar imagen</button>
+    </div>
+
+    <!-- Sección de Edición -->
+    <div class="card">
+        <label>Editar imagen existente</label>
+        <input type="file" id="file" accept="image/*">
+        <textarea id="instr" placeholder="Ej: Cambia el fondo a color violeta..."></textarea>
+        <button class="btn secondary" id="edit">🪄 Editar imagen</button>
     </div>
 
     <div class="stage" id="stage">Tu imagen aparecerá aquí</div>
@@ -47,49 +53,47 @@
 
 <script>
     const $ = s => document.querySelector(s),
-          err = $("#err"),
-          stage = $("#stage"),
-          API_URL = "https://magic-ai-studio.anedilone27.workers.dev"; // URL fija
+          err = $("#err"), stage = $("#stage"),
+          API_URL = "https://magic-ai-studio.anedilone27.workers.dev";
 
     function load(t) {
         err.classList.add("hidden");
         stage.innerHTML = `<div><div class="spin"></div><p style="margin-top:15px; color:#aaa; font-size:14px">${t}</p></div>`;
     }
 
-    async function request(path, opt) {
+    async function sendRequest(path, options) {
         const c = new AbortController(), timer = setTimeout(() => c.abort(), 300000);
         try {
-            const r = await fetch(API_URL + path, { ...opt, signal: c.signal });
-            if (!r.ok) throw Error("Error al procesar la solicitud.");
+            const r = await fetch(API_URL + path, { ...options, signal: c.signal });
+            if (!r.ok) throw Error("Error del servidor.");
             return await r.blob();
         } catch (e) {
-            throw Error(e.name === "AbortError" ? "La IA tardó demasiado." : e.message);
+            throw Error(e.name === "AbortError" ? "Tiempo de espera agotado." : e.message);
         } finally { clearTimeout(timer); }
     }
 
     $("#gen").onclick = async () => {
         const p = $("#prompt").value.trim();
-        if (!p) return alert("Por favor, escribe una descripción.");
-        
+        if (!p) return alert("Escribe una descripción.");
         let [width, height] = $("#size").value.split(",").map(Number);
-        load("Creando tu obra maestra...");
-        
+        load("Generando...");
         try {
-            const blob = await request("/generate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt: p, width, height })
-            });
-            
-            if (blob.size < 1000) throw Error("Error al generar la imagen.");
-            
-            const url = URL.createObjectURL(blob);
-            stage.innerHTML = `<img src="${url}">`;
-        } catch (e) {
-            stage.textContent = "Tu imagen aparecerá aquí";
-            err.textContent = e.message;
-            err.classList.remove("hidden");
-        }
+            const b = await sendRequest("/generate", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({prompt:p,width,height}) });
+            stage.innerHTML = `<img src="${URL.createObjectURL(b)}">`;
+        } catch(e) { err.textContent = e.message; err.classList.remove("hidden"); stage.textContent = "Error."; }
+    };
+
+    $("#edit").onclick = async () => {
+        const file = $("#file").files[0], instr = $("#instr").value.trim();
+        if (!file || !instr) return alert("Sube una imagen y escribe qué cambiar.");
+        load("Editando...");
+        const fd = new FormData();
+        fd.append("image", file);
+        fd.append("prompt", instr);
+        try {
+            const b = await sendRequest("/edit", { method: "POST", body: fd });
+            stage.innerHTML = `<img src="${URL.createObjectURL(b)}">`;
+        } catch(e) { err.textContent = e.message; err.classList.remove("hidden"); stage.textContent = "Error."; }
     };
 </script>
 </body>
