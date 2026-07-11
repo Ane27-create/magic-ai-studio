@@ -1,23 +1,96 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Magic AI Studio</title><style>
-*{box-sizing:border-box}body{margin:0;background:#08080f;color:#fff;font-family:system-ui;background-image:radial-gradient(circle at top,#28144d,transparent 35%)}.app{max-width:650px;margin:auto;padding:18px}.logo{font-size:24px;font-weight:900;margin:12px 0 20px}.logo span{color:#b38cff}.notice,.card{background:#12121d;border:1px solid #2d2d40;border-radius:18px;padding:16px;margin-bottom:14px}.notice{font-size:13px;color:#c7c7d5}.tabs{display:flex;gap:6px;background:#0d0d16;padding:5px;border-radius:14px;margin-bottom:14px}.tab{flex:1;border:0;background:transparent;color:#aaa;padding:12px;border-radius:10px;font-weight:800}.tab.on{background:#202031;color:#fff}label{display:block;font-size:13px;font-weight:800;margin:12px 0 7px}textarea,input,select{width:100%;padding:13px;border-radius:12px;border:1px solid #303044;background:#090911;color:#fff;font:inherit}textarea{min-height:130px}.btn{width:100%;margin-top:14px;padding:14px;border:0;border-radius:13px;background:linear-gradient(90deg,#8b5cf6,#ec4899);color:white;font-weight:900}.upload{display:flex;min-height:220px;align-items:center;justify-content:center;border:1px dashed #555574;border-radius:14px;text-align:center;color:#aaa;overflow:hidden}.upload input{display:none}.upload img{width:100%;max-height:400px;object-fit:contain}.stage{min-height:340px;display:flex;align-items:center;justify-content:center;background:#06060b;border-radius:15px;overflow:hidden;text-align:center;color:#999;padding:12px}.stage img{max-width:100%;max-height:650px}.hidden{display:none!important}.spin{width:45px;height:45px;border:4px solid #30294a;border-top-color:#a78bfa;border-radius:50%;animation:s .8s linear infinite;margin:auto}@keyframes s{to{transform:rotate(360deg)}}.error{color:#fecdd3;background:#28151d;border:1px solid #703044;padding:12px;border-radius:12px;margin-top:12px;white-space:pre-wrap}.download{margin-top:10px;background:#202031;border:1px solid #343449;color:#fff;padding:12px;border-radius:12px;width:100%;font-weight:800}
-</style></head><body><div class="app"><div class="logo">✨ <span>Magic AI Studio</span></div>
-<div class="notice">📱 Versión móvil. Solo debes colocar una vez la dirección de tu API de Cloudflare Worker.</div>
-<div class="card"><label>Dirección de tu API</label><input id="api" placeholder="https://magic-ai.tuusuario.workers.dev"><button class="download" id="save">Guardar conexión</button></div>
-<div class="tabs"><button class="tab on" data-m="g">✦ Generar</button><button class="tab" data-m="e">✎ Editar</button></div>
-<div class="card"><div id="g"><label>Describe la imagen</label><textarea id="prompt" placeholder="Un futbolista profesional de Agencia Magic, uniforme negro y violeta, fotografía cinematográfica..."></textarea><label>Formato</label><select id="size"><option value="1024,1024">Cuadrado</option><option value="768,1024">Vertical</option><option value="1024,768">Horizontal</option></select><button class="btn" id="gen">✨ Generar imagen</button></div>
-<div id="e" class="hidden"><label>Imagen original</label><label class="upload"><input id="file" type="file" accept="image/*"><span id="up">📷<br><b>Toca para subir una imagen</b></span><img id="preview" class="hidden"></label><label>¿Qué quieres cambiar?</label><textarea id="instruction" placeholder="Cambia la ropa por un uniforme de fútbol negro y violeta. Conserva el rostro, tono de piel y peinado."></textarea><button class="btn" id="edit">🪄 Editar imagen</button></div><div id="err" class="error hidden"></div></div>
-<div class="card"><div class="stage" id="stage">Tu imagen aparecerá aquí.</div><button id="download" class="download hidden">⬇ Descargar resultado</button></div></div>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Magic AI Studio</title>
+<style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #050508; color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; }
+    .app { max-width: 500px; margin: auto; padding: 20px; }
+    .logo { font-size: 26px; font-weight: 800; margin-bottom: 25px; text-align: center; }
+    .logo span { background: linear-gradient(90deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .card { background: #0d0d16; border: 1px solid #1f1f2e; border-radius: 20px; padding: 20px; margin-bottom: 15px; }
+    label { display: block; font-size: 12px; font-weight: 700; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+    textarea, select { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #2d2d40; background: #151520; color: #fff; font: inherit; margin-bottom: 15px; }
+    .btn { width: 100%; padding: 16px; border: 0; border-radius: 15px; background: linear-gradient(90deg, #8b5cf6, #ec4899); color: white; font-weight: 800; cursor: pointer; transition: transform 0.2s; }
+    .btn:active { transform: scale(0.98); }
+    .stage { min-height: 300px; display: flex; align-items: center; justify-content: center; background: #0a0a12; border-radius: 20px; overflow: hidden; text-align: center; color: #444; border: 1px solid #1f1f2e; }
+    .stage img { max-width: 100%; }
+    .spin { width: 40px; height: 40px; border: 4px solid #202031; border-top-color: #8b5cf6; border-radius: 50%; animation: s .8s linear infinite; margin: auto; }
+    @keyframes s { to { transform: rotate(360deg); } }
+    .error { color: #ff8080; font-size: 14px; text-align: center; margin-top: 10px; }
+    .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+    <div class="logo">✨ <span>Magic AI Studio</span></div>
+    
+    <div class="card">
+        <label>Describe tu visión</label>
+        <textarea id="prompt" placeholder="Ej: Un astronauta montando un caballo en Marte, estilo cyberpunk..."></textarea>
+        
+        <label>Formato</label>
+        <select id="size">
+            <option value="1024,1024">Cuadrado (1:1)</option>
+            <option value="768,1024">Vertical (3:4)</option>
+            <option value="1024,768">Horizontal (4:3)</option>
+        </select>
+        
+        <button class="btn" id="gen">✨ Generar imagen</button>
+    </div>
+
+    <div class="stage" id="stage">Tu imagen aparecerá aquí</div>
+    <div id="err" class="error hidden"></div>
+</div>
+
 <script>
-const $=s=>document.querySelector(s),api=$("#api"),err=$("#err"),stage=$("#stage");let file=null,url=null;
-api.value=localStorage.getItem("magicApi")||"https://magic-ai-studio.anedilone27.workers.dev";$("#save").onclick=()=>{localStorage.setItem("magicApi",api.value.trim().replace(/\/$/,""));alert("Conexión guardada")};
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));$("#g").classList.toggle("hidden",b.dataset.m!=="g");$("#e").classList.toggle("hidden",b.dataset.m!=="e")});
-$("#file").onchange=x=>{file=x.target.files[0];if(file){$("#preview").src=URL.createObjectURL(file);$("#preview").classList.remove("hidden");$("#up").classList.add("hidden")}};
-function base(){const a=api.value.trim().replace(/\/$/,"");if(!a)throw Error("Primero coloca la dirección de tu Cloudflare Worker.");return a}
-function load(t){err.classList.add("hidden");$("#download").classList.add("hidden");stage.innerHTML=`<div><div class="spin"></div><b style="display:block;margin-top:15px">${t}</b></div>`}
-function fail(e){err.textContent=e.message;err.classList.remove("hidden");stage.textContent="No se pudo completar la solicitud."}
-async function request(path,opt){const c=new AbortController(),timer=setTimeout(()=>c.abort(),120000);try{const r=await fetch(base()+path,{...opt,signal:c.signal});if(!r.ok){let d=await r.json().catch(()=>({}));throw Error(d.error||"Error de la IA")}return await r.blob()}catch(e){if(e.name==="AbortError")throw Error("La IA tardó demasiado.");throw e}finally{clearTimeout(timer)}}
-function show(b){if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(b);stage.innerHTML=`<img src="${url}">`;$("#download").classList.remove("hidden")}
-$("#gen").onclick=async()=>{try{const p=$("#prompt").value.trim();if(!p)throw Error("Escribe una descripción.");let [width,height]=$("#size").value.split(",").map(Number);load("Generando…");show(await request("/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:p,width,height})}))}catch(e){fail(e)}};
-$("#edit").onclick=async()=>{try{if(!file)throw Error("Sube una imagen.");const p=$("#instruction").value.trim();if(!p)throw Error("Escribe qué quieres cambiar.");load("Editando…");const f=new FormData();f.append("image",file);f.append("prompt",p);show(await request("/edit",{method:"POST",body:f}))}catch(e){fail(e)}};
-$("#download").onclick=()=>{const a=document.createElement("a");a.href=url;a.download=`magic-ai-${Date.now()}.png`;a.click()};
-</script></body></html>
+    const $ = s => document.querySelector(s),
+          err = $("#err"),
+          stage = $("#stage"),
+          API_URL = "https://magic-ai-studio.anedilone27.workers.dev"; // URL fija
+
+    function load(t) {
+        err.classList.add("hidden");
+        stage.innerHTML = `<div><div class="spin"></div><p style="margin-top:15px; color:#aaa; font-size:14px">${t}</p></div>`;
+    }
+
+    async function request(path, opt) {
+        const c = new AbortController(), timer = setTimeout(() => c.abort(), 300000);
+        try {
+            const r = await fetch(API_URL + path, { ...opt, signal: c.signal });
+            if (!r.ok) throw Error("Error al procesar la solicitud.");
+            return await r.blob();
+        } catch (e) {
+            throw Error(e.name === "AbortError" ? "La IA tardó demasiado." : e.message);
+        } finally { clearTimeout(timer); }
+    }
+
+    $("#gen").onclick = async () => {
+        const p = $("#prompt").value.trim();
+        if (!p) return alert("Por favor, escribe una descripción.");
+        
+        let [width, height] = $("#size").value.split(",").map(Number);
+        load("Creando tu obra maestra...");
+        
+        try {
+            const blob = await request("/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt: p, width, height })
+            });
+            
+            if (blob.size < 1000) throw Error("Error al generar la imagen.");
+            
+            const url = URL.createObjectURL(blob);
+            stage.innerHTML = `<img src="${url}">`;
+        } catch (e) {
+            stage.textContent = "Tu imagen aparecerá aquí";
+            err.textContent = e.message;
+            err.classList.remove("hidden");
+        }
+    };
+</script>
+</body>
+</html>
