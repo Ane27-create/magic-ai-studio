@@ -1,66 +1,948 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#08070d">
 <title>Magic AI Studio</title>
+
 <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #050508; color: #fff; font-family: 'Segoe UI', system-ui, sans-serif; }
-    .app { max-width: 500px; margin: auto; padding: 20px; }
-    .logo { font-size: 26px; font-weight: 800; margin-bottom: 25px; text-align: center; }
-    .logo span { background: linear-gradient(90deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .card { background: #0d0d16; border: 1px solid #1f1f2e; border-radius: 20px; padding: 20px; margin-bottom: 15px; }
-    textarea { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #2d2d40; background: #151520; color: #fff; font: inherit; margin-bottom: 10px; min-height: 100px; }
-    .controls { display: flex; gap: 10px; }
-    .btn { flex: 1; padding: 16px; border: 0; border-radius: 15px; background: linear-gradient(90deg, #8b5cf6, #ec4899); color: white; font-weight: 800; cursor: pointer; }
-    .btn.secondary { background: #2d2d40; flex: 0; }
-    .stage { min-height: 300px; display: flex; align-items: center; justify-content: center; background: #0a0a12; border-radius: 20px; border: 1px solid #1f1f2e; color: #444; margin-bottom: 15px; overflow: hidden; }
-    .stage img { max-width: 100%; }
-    .error { color: #ff8080; text-align: center; margin-bottom: 10px; }
-    .hidden { display: none !important; }
+:root{
+  --bg:#08070d;
+  --card:#12101b;
+  --card2:#191526;
+  --purple:#9d5cff;
+  --pink:#ff4fd8;
+  --gold:#ffd76a;
+  --text:#fff;
+  --muted:#aaa3b8;
+  --border:rgba(255,255,255,.09);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#26134a 0,transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+
+button,input,textarea,select{font:inherit}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 18px;
+  background:rgba(8,7,13,.85);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+
+.brand{
+  font-size:18px;
+  font-weight:900;
+}
+
+.brand span{
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.stats{
+  display:flex;
+  gap:7px;
+}
+
+.stat{
+  background:var(--card2);
+  border:1px solid var(--border);
+  padding:8px 10px;
+  border-radius:14px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:20px 15px 100px;
+}
+
+.hero{
+  padding:28px 5px 20px;
+}
+
+.badge{
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:20px;
+  background:rgba(157,92,255,.15);
+  color:#cdaeff;
+  font-size:12px;
+}
+
+h1{
+  font-size:clamp(35px,8vw,67px);
+  line-height:.95;
+  margin:15px 0;
+}
+
+.gradient{
+  background:linear-gradient(90deg,#b278ff,#ff5fd7,#ffd76a);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.subtitle{
+  color:var(--muted);
+  max-width:600px;
+  line-height:1.6;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:16px;
+}
+
+.card{
+  background:linear-gradient(145deg,rgba(25,21,38,.96),rgba(14,12,22,.96));
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.card h2{
+  margin:0 0 15px;
+  font-size:18px;
+}
+
+textarea{
+  width:100%;
+  min-height:130px;
+  resize:vertical;
+  padding:16px;
+  border-radius:17px;
+  background:#0c0a12;
+  color:white;
+  border:1px solid var(--border);
+  outline:none;
+}
+
+textarea:focus{
+  border-color:var(--purple);
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+
+select,.fileBox{
+  width:100%;
+  min-height:48px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#0c0a12;
+  color:white;
+  padding:12px;
+}
+
+.fileBox{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  color:var(--muted);
+}
+
+.fileBox input{display:none}
+
+.generate{
+  width:100%;
+  border:0;
+  margin-top:12px;
+  padding:16px;
+  border-radius:16px;
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  box-shadow:0 10px 30px rgba(157,92,255,.3);
+}
+
+.generate:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.preview{
+  min-height:390px;
+  border-radius:20px;
+  background:#09080e;
+  border:1px dashed rgba(255,255,255,.14);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  position:relative;
+}
+
+.preview img{
+  width:100%;
+  height:100%;
+  max-height:600px;
+  object-fit:contain;
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:30px;
+}
+
+.emptyIcon{
+  font-size:55px;
+  margin-bottom:12px;
+}
+
+.loader{
+  width:45px;
+  height:45px;
+  border:4px solid rgba(255,255,255,.1);
+  border-top-color:var(--pink);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:auto;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.action{
+  flex:1;
+  padding:12px;
+  border-radius:13px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:white;
+  cursor:pointer;
+}
+
+.sectionTitle{
+  margin:35px 0 15px;
+}
+
+.missions{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.mission{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:17px;
+}
+
+.missionIcon{font-size:30px}
+
+.mission h3{margin:12px 0 5px}
+
+.mission p{
+  color:var(--muted);
+  font-size:13px;
+  min-height:38px;
+}
+
+.reward{
+  color:var(--gold);
+  font-weight:bold;
+  font-size:13px;
+}
+
+.mission button{
+  width:100%;
+  margin-top:12px;
+  padding:11px;
+  border:0;
+  border-radius:12px;
+  background:#2a2141;
+  color:white;
+  font-weight:bold;
+}
+
+.history{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+.historyItem{
+  aspect-ratio:1;
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--card);
+  cursor:pointer;
+}
+
+.historyItem img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.notice{
+  margin-top:15px;
+  padding:12px;
+  border-radius:13px;
+  font-size:13px;
+  display:none;
+}
+
+.notice.error{
+  display:block;
+  background:rgba(255,60,90,.12);
+  color:#ff91a3;
+}
+
+.notice.success{
+  display:block;
+  background:rgba(60,255,160,.1);
+  color:#8dffc1;
+}
+
+nav{
+  display:none;
+}
+
+@media(max-width:750px){
+  .grid{grid-template-columns:1fr}
+  .missions{grid-template-columns:1fr}
+  .history{grid-template-columns:repeat(2,1fr)}
+  .preview{min-height:330px}
+  header{padding:12px}
+  .brand{font-size:15px}
+  .stat{padding:7px;font-size:11px}
+  .hero{padding-top:25px}
+}
 </style>
 </head>
-<body>
-<div class="app">
-    <div class="logo">✨ <span>Magic AI Studio</span></div>
-    
-    <div class="card">
-        <textarea id="prompt" placeholder="Describe tu imagen o la edición que deseas..."></textarea>
-        <div class="controls">
-            <input type="file" id="file" accept="image/*" style="display:none" onchange="this.nextElementSibling.style.background='#4f46e5'">
-            <button class="btn secondary" onclick="document.getElementById('file').click()">📎</button>
-            <button class="btn" id="gen">✨ Enviar</button>
-        </div>
-    </div>
 
-    <div class="stage" id="stage">Tu imagen aparecerá aquí</div>
-    <div id="err" class="error hidden"></div>
+<body>
+
+<header>
+  <div class="brand">✨ <span>MAGIC AI</span></div>
+
+  <div class="stats">
+    <div class="stat">⚡ <span id="energy">5</span></div>
+    <div class="stat">💎 <span id="points">0</span> VIP</div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <span class="badge">✦ AGENCIA MAGIC EXPERIENCE</span>
+
+  <h1>
+    Crea algo<br>
+    <span class="gradient">imposible.</span>
+  </h1>
+
+  <p class="subtitle">
+    Genera imágenes con inteligencia artificial, transforma tus ideas
+    y completa misiones para conseguir más Energía Magic.
+  </p>
+</section>
+
+<section class="grid">
+
+<div class="card">
+  <h2>✨ Estudio Creativo</h2>
+
+  <textarea id="prompt"
+  placeholder="Describe tu imagen... Ej: Futbolista profesional con uniforme negro y morado, estadio futurista, fotografía realista"></textarea>
+
+  <div class="row">
+    <select id="style">
+      <option value="">Estilo automático</option>
+      <option value="photorealistic, cinematic lighting, ultra detailed">📸 Realista</option>
+      <option value="professional fashion photography, luxury editorial">👑 Modelo VIP</option>
+      <option value="anime style, detailed illustration">🎌 Anime</option>
+      <option value="fantasy art, magical atmosphere">🔮 Fantasía</option>
+      <option value="cyberpunk, neon lights, futuristic">🌃 Cyberpunk</option>
+      <option value="professional sports photography, dynamic">⚽ Deportivo</option>
+    </select>
+
+    <label class="fileBox">
+      🖼️ <span id="fileName">&nbsp;Subir imagen</span>
+      <input type="file" id="imageInput" accept="image/*">
+    </label>
+  </div>
+
+  <button class="generate" id="generateBtn" onclick="generateImage()">
+    ✨ GENERAR IMAGEN · 1 ⚡
+  </button>
+
+  <div id="notice" class="notice"></div>
 </div>
 
+<div class="card">
+  <h2>Resultado Magic</h2>
+
+  <div class="preview" id="preview">
+    <div class="empty">
+      <div class="emptyIcon">✦</div>
+      <b>Tu creación aparecerá aquí</b>
+      <p>Escribe una idea y activa la magia.</p>
+    </div>
+  </div>
+
+  <div class="actions" id="actions" style="display:none">
+    <button class="action" onclick="downloadImage()">⬇ Guardar</button>
+    <button class="action" onclick="reuseImage()">🎨 Editar</button>
+  </div>
+</div>
+
+</section>
+
+<h2 class="sectionTitle">⚡ Misiones de Energía</h2>
+
+<section class="missions">
+
+<div class="mission">
+  <div class="missionIcon">👑</div>
+  <h3>Descubre un talento</h3>
+  <p>Visita uno de los perfiles destacados de Agencia Magic.</p>
+  <div class="reward">+2 ⚡ Energía</div>
+  <button onclick="startMission('talent',this)">INICIAR MISIÓN</button>
+</div>
+
+<div class="mission">
+  <div class="missionIcon">💜</div>
+  <h3>Explora Golden VIP</h3>
+  <p>Descubre contenido y novedades del ecosistema VIP.</p>
+  <div class="reward">+15 💎 VIP</div>
+  <button onclick="startMission('vip',this)">INICIAR MISIÓN</button>
+</div>
+
+<div class="mission">
+  <div class="missionIcon">🔥</div>
+  <h3>Misión Magic</h3>
+  <p>Completa una misión especial disponible cada cinco minutos.</p>
+  <div class="reward">+1 ⚡ Energía</div>
+  <button onclick="startMission('magic',this)">INICIAR MISIÓN</button>
+</div>
+
+</section>
+
+<h2 class="sectionTitle">🎨 Mis Creaciones</h2>
+
+<section id="history" class="history"></section>
+
+</main>
+
 <script>
-    const $ = s => document.querySelector(s), API_URL = "https://magic-ai-studio.anedilone27.workers.dev";
-    
-    $("#gen").onclick = async () => {
-        const p = $("#prompt").value.trim(), file = $("#file").files[0];
-        if (!p) return alert("Escribe una descripción.");
-        
-        $("#stage").innerHTML = "Procesando...";
-        let b;
-        try {
-            if (file) {
-                const fd = new FormData();
-                fd.append("image", file);
-                fd.append("prompt", p);
-                const r = await fetch(API_URL, { method: "POST", body: fd });
-                b = await r.blob();
-            } else {
-                const r = await fetch(API_URL, { method: "POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({prompt:p, width:1024, height:1024}) });
-                b = await r.blob();
-            }
-            $("#stage").innerHTML = `<img src="${URL.createObjectURL(b)}">`;
-        } catch(e) { $("#err").textContent = "Error al procesar."; $("#err").classList.remove("hidden"); }
+const API_URL =
+"https://magic-ai-studio.anedilone27.workers.dev/generate";
+
+const MAX_DAILY_FREE = 5;
+
+let state = JSON.parse(
+  localStorage.getItem("magicAIState")
+) || {
+  energy: 5,
+  points: 0,
+  dailyUsed: 0,
+  day: new Date().toDateString(),
+  missions: {},
+  history: []
+};
+
+let currentImage = null;
+let uploadedImage = null;
+
+function saveState(){
+  localStorage.setItem(
+    "magicAIState",
+    JSON.stringify(state)
+  );
+
+  updateUI();
+}
+
+function checkDay(){
+  const today = new Date().toDateString();
+
+  if(state.day !== today){
+    state.day = today;
+    state.dailyUsed = 0;
+    state.energy = Math.max(state.energy,5);
+    state.missions = {};
+    saveState();
+  }
+}
+
+function updateUI(){
+  document.getElementById("energy").textContent =
+    state.energy;
+
+  document.getElementById("points").textContent =
+    state.points;
+
+  renderHistory();
+}
+
+function showNotice(message,type="error"){
+  const notice = document.getElementById("notice");
+
+  notice.textContent = message;
+  notice.className = "notice " + type;
+
+  setTimeout(()=>{
+    notice.className = "notice";
+  },5000);
+}
+
+document
+.getElementById("imageInput")
+.addEventListener("change",event=>{
+
+  const file = event.target.files[0];
+
+  if(!file) return;
+
+  uploadedImage = file;
+
+  document.getElementById("fileName").textContent =
+    file.name.length > 18
+    ? file.name.slice(0,18)+"..."
+    : file.name;
+
+  showNotice(
+    "Imagen cargada. El modo edición dependerá de la compatibilidad del servidor.",
+    "success"
+  );
+});
+
+async function generateImage(){
+
+  const prompt =
+    document.getElementById("prompt").value.trim();
+
+  const style =
+    document.getElementById("style").value;
+
+  if(!prompt){
+    showNotice("Escribe una descripción para crear tu imagen.");
+    return;
+  }
+
+  if(state.energy <= 0){
+
+    if(state.points >= 20){
+      state.points -= 20;
+      state.energy += 1;
+      saveState();
+
+      showNotice(
+        "20 Puntos VIP convertidos en 1 Energía Magic.",
+        "success"
+      );
+    }else{
+      showNotice(
+        "No tienes Energía Magic. Completa una misión."
+      );
+      return;
+    }
+  }
+
+  const finalPrompt =
+    style
+    ? prompt + ", " + style
+    : prompt;
+
+  const button =
+    document.getElementById("generateBtn");
+
+  const preview =
+    document.getElementById("preview");
+
+  button.disabled = true;
+  button.textContent = "GENERANDO MAGIA...";
+
+  preview.innerHTML = `
+    <div class="empty">
+      <div class="loader"></div>
+      <p>La IA está creando tu imagen...</p>
+      <small>Esto puede tardar unos segundos.</small>
+    </div>
+  `;
+
+  try{
+
+    const response = await fetch(API_URL,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        prompt:finalPrompt
+      })
+    });
+
+    if(!response.ok){
+
+      let errorText = await response.text();
+
+      console.error(
+        "MAGIC API ERROR:",
+        response.status,
+        errorText
+      );
+
+      throw new Error(
+        "Servidor IA respondió " + response.status
+      );
+    }
+
+    const contentType =
+      response.headers.get("content-type") || "";
+
+    let imageURL;
+
+    if(contentType.includes("application/json")){
+
+      const data = await response.json();
+
+      if(data.image){
+        imageURL = data.image;
+      }
+      else if(data.url){
+        imageURL = data.url;
+      }
+      else if(data.output){
+        imageURL = Array.isArray(data.output)
+          ? data.output[0]
+          : data.output;
+      }
+      else{
+        console.error("JSON IA:",data);
+        throw new Error(
+          data.error ||
+          data.message ||
+          "La API no devolvió una imagen."
+        );
+      }
+
+    }else{
+
+      const blob = await response.blob();
+
+      if(!blob.type.startsWith("image/")){
+        const text = await blob.text();
+        console.error(text);
+        throw new Error(
+          "El servidor no devolvió una imagen válida."
+        );
+      }
+
+      imageURL = URL.createObjectURL(blob);
+    }
+
+    currentImage = imageURL;
+
+    preview.innerHTML = "";
+
+    const img = document.createElement("img");
+
+    img.src = imageURL;
+    img.alt = "Imagen creada con Magic AI";
+
+    preview.appendChild(img);
+
+    document.getElementById("actions").style.display =
+      "flex";
+
+    state.energy--;
+    state.dailyUsed++;
+
+    addHistory(imageURL,finalPrompt);
+
+    saveState();
+
+    showNotice(
+      "✨ Imagen creada correctamente.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    preview.innerHTML = `
+      <div class="empty">
+        <div class="emptyIcon">⚠️</div>
+        <b>No se pudo generar</b>
+        <p>${escapeHTML(error.message)}</p>
+      </div>
+    `;
+
+    showNotice(
+      "Error: " + error.message
+    );
+
+  }finally{
+
+    button.disabled = false;
+    button.textContent =
+      "✨ GENERAR IMAGEN · 1 ⚡";
+  }
+}
+
+function addHistory(image,prompt){
+
+  state.history.unshift({
+    image,
+    prompt,
+    date:Date.now()
+  });
+
+  state.history =
+    state.history.slice(0,8);
+}
+
+function renderHistory(){
+
+  const history =
+    document.getElementById("history");
+
+  history.innerHTML = "";
+
+  if(!state.history.length){
+
+    history.innerHTML = `
+      <div style="color:#aaa3b8">
+        Aún no tienes creaciones.
+      </div>
+    `;
+
+    return;
+  }
+
+  state.history.forEach(item=>{
+
+    const div =
+      document.createElement("div");
+
+    div.className = "historyItem";
+
+    const img =
+      document.createElement("img");
+
+    img.src = item.image;
+
+    img.onclick = ()=>{
+
+      currentImage = item.image;
+
+      document.getElementById("preview").innerHTML =
+        `<img src="${item.image}" alt="Creación Magic">`;
+
+      document.getElementById("actions").style.display =
+        "flex";
+
+      window.scrollTo({
+        top:250,
+        behavior:"smooth"
+      });
     };
+
+    div.appendChild(img);
+    history.appendChild(div);
+  });
+}
+
+async function downloadImage(){
+
+  if(!currentImage) return;
+
+  try{
+
+    const response =
+      await fetch(currentImage);
+
+    const blob =
+      await response.blob();
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+    a.download =
+      "magic-ai-" + Date.now() + ".png";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+  }catch(error){
+
+    window.open(currentImage,"_blank");
+  }
+}
+
+function reuseImage(){
+
+  if(!currentImage) return;
+
+  document.getElementById("prompt").value =
+    "Transforma esta imagen manteniendo la identidad visual, ";
+
+  document.getElementById("prompt").focus();
+
+  showNotice(
+    "Describe el cambio que quieres realizar. Para edición IA real, el Worker debe aceptar la imagen original.",
+    "success"
+  );
+}
+
+function startMission(type,button){
+
+  const cooldown = 5 * 60 * 1000;
+  const last = state.missions[type] || 0;
+  const elapsed = Date.now() - last;
+
+  if(elapsed < cooldown){
+
+    const remaining =
+      Math.ceil((cooldown-elapsed)/1000);
+
+    showNotice(
+      "Esta misión estará disponible en " +
+      formatTime(remaining)
+    );
+
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "MISIÓN EN CURSO...";
+
+  /*
+    CAMBIA ESTOS ENLACES POR LOS
+    INSTAGRAM REALES DE TUS TALENTOS.
+  */
+
+  const links = {
+    talent:"https://www.instagram.com/",
+    vip:"https://www.instagram.com/",
+    magic:"https://www.instagram.com/"
+  };
+
+  window.open(links[type],"_blank");
+
+  let seconds = 15;
+
+  button.textContent =
+    "ESPERA " + seconds + "s";
+
+  const timer = setInterval(()=>{
+
+    seconds--;
+
+    button.textContent =
+      "ESPERA " + seconds + "s";
+
+    if(seconds <= 0){
+
+      clearInterval(timer);
+
+      completeMission(type,button);
+    }
+
+  },1000);
+}
+
+function completeMission(type,button){
+
+  if(type === "talent"){
+    state.energy += 2;
+  }
+
+  if(type === "vip"){
+    state.points += 15;
+  }
+
+  if(type === "magic"){
+    state.energy += 1;
+  }
+
+  state.missions[type] = Date.now();
+
+  saveState();
+
+  button.disabled = false;
+  button.textContent = "MISIÓN COMPLETADA ✓";
+
+  showNotice(
+    "🎉 Recompensa Magic añadida.",
+    "success"
+  );
+
+  setTimeout(()=>{
+    button.textContent = "INICIAR MISIÓN";
+  },3000);
+}
+
+function formatTime(seconds){
+
+  const min =
+    Math.floor(seconds/60);
+
+  const sec =
+    seconds%60;
+
+  return min + ":" +
+    String(sec).padStart(2,"0");
+}
+
+function escapeHTML(value){
+
+  return value
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+checkDay();
+updateUI();
 </script>
+
 </body>
 </html>
