@@ -5,186 +5,1784 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#09070f">
 <title>Magic AI Studio</title>
+
 <style>
-:root{--bg:#09070f;--card:#15111f;--card2:#1d1729;--purple:#a35cff;--pink:#ff4fce;--gold:#ffd76a;--green:#69efad;--text:#fff;--muted:#aaa2b7;--border:rgba(255,255,255,.09)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#32165c 0,transparent 30%),var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
-button,textarea,select{font:inherit}button{cursor:pointer}
-header{position:sticky;top:0;z-index:50;min-height:64px;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(9,7,15,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-.logo{font-size:15px;font-weight:900;white-space:nowrap}.logo span,.gradient{background:linear-gradient(90deg,var(--purple),var(--pink),var(--gold));-webkit-background-clip:text;color:transparent}
-.wallet{display:flex;gap:5px}.walletItem{padding:8px 9px;border-radius:13px;background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:bold}
-main{width:100%;max-width:650px;margin:auto;padding:16px 14px 100px}
-.hero{padding:20px 3px 12px}.badge{display:inline-block;padding:7px 10px;border-radius:20px;background:rgba(163,92,255,.14);color:#d1b4ff;font-size:10px;font-weight:bold}
-h1{margin:15px 0 10px;font-size:40px;line-height:.95;letter-spacing:-2px}.hero p{color:var(--muted);font-size:14px;line-height:1.5}
-.card{margin-bottom:14px;padding:16px;border-radius:22px;background:linear-gradient(145deg,#171220,#100d17);border:1px solid var(--border);box-shadow:0 18px 50px rgba(0,0,0,.25)}
-.sectionTitle{margin:25px 2px 12px;font-size:18px}
-.dailyMission{position:relative;overflow:hidden}.dailyMission:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:var(--purple);filter:blur(100px);opacity:.18;right:-80px;top:-80px}
-.missionTop,.progressTop,.magicTop{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px}.missionLabel{color:var(--gold);font-size:10px;font-weight:900}.streak{padding:7px 9px;border-radius:12px;background:rgba(255,150,60,.12);color:#ffb066;font-size:11px;font-weight:bold}
-.themeIcon{position:relative;margin-top:17px;font-size:43px}.dailyMission h2{position:relative;margin:7px 0;font-size:24px}.dailyMission p{position:relative;margin:0;color:var(--muted);font-size:13px;line-height:1.5}
-.rewardBox{position:relative;display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}.reward{padding:8px 10px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid var(--border);font-size:11px;font-weight:bold}
-.missionStatus{position:relative;margin-top:13px;padding:12px;border-radius:14px;background:#0c0912;border:1px solid var(--border)}.progressTop{margin-bottom:8px;color:var(--muted);font-size:11px}
-.progress{height:7px;border-radius:10px;background:#25202e;overflow:hidden}.progressFill{width:0;height:100%;background:linear-gradient(90deg,var(--purple),var(--pink));transition:.4s}
-.missionBtn,.generateBtn,.instagramBtn,.claimBtn{width:100%;margin-top:11px;padding:14px;border:0;border-radius:14px;color:white;font-weight:900;background:linear-gradient(90deg,#7542bd,#b33d9e)}
-.missionBtn.claim,.claimBtn{background:linear-gradient(90deg,#d39b28,#ffc34d);color:#1b1100}
-.magicBar{display:none;position:sticky;top:73px;z-index:40;margin-bottom:14px;padding:13px 14px;border-radius:18px;background:linear-gradient(135deg,#27153d,#171020);border:1px solid rgba(190,112,255,.28);box-shadow:0 12px 30px rgba(0,0,0,.3)}
-.magicBar.show{display:block}.magicName{font-size:12px;font-weight:900}.magicTimer{font-size:20px;font-weight:900;color:var(--gold)}.magicMeta{margin:8px 0;color:var(--muted);font-size:10px}.magicProgress{height:6px;background:#33283d;border-radius:10px;overflow:hidden}.magicProgress div{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--pink));transition:width 1s linear}.meterCard{padding:14px 16px}.meterTitle{display:flex;justify-content:space-between;gap:10px;font-size:11px;font-weight:900}.meterTitle span:last-child{color:var(--gold)}.meterText{margin:8px 0;color:var(--muted);font-size:11px}.pulseGlow{animation:pulseGlow 1.2s ease-in-out infinite alternate}@keyframes pulseGlow{to{box-shadow:0 0 35px rgba(255,79,206,.35)}}
-textarea{width:100%;min-height:130px;padding:15px;resize:none;border-radius:16px;background:#0b0910;border:1px solid var(--border);color:white;outline:none;line-height:1.5}textarea:focus{border-color:var(--purple)}
-select{width:100%;margin-top:9px;padding:13px;border-radius:14px;background:#0b0910;border:1px solid var(--border);color:white;outline:none}.generateBtn{background:linear-gradient(90deg,var(--purple),var(--pink));box-shadow:0 10px 30px rgba(163,92,255,.25)}.generateBtn:disabled{opacity:.5}
-.preview{min-height:350px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:18px;background:#09070d;border:1px dashed rgba(255,255,255,.13)}.preview img{display:block;width:100%;max-height:600px;object-fit:contain}
-.empty{padding:30px 20px;color:var(--muted);text-align:center;font-size:13px}.emptyIcon{margin-bottom:12px;font-size:50px}.loader{width:44px;height:44px;margin:0 auto 15px;border:4px solid rgba(255,255,255,.08);border-top-color:var(--pink);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-.imageActions{display:none;gap:8px;margin-top:10px}.imageActions button{flex:1;padding:12px;border-radius:13px;background:var(--card2);border:1px solid var(--border);color:white;font-weight:bold}
-.notice{display:none;margin-top:10px;padding:11px;border-radius:12px;font-size:12px}.notice.success{display:block;color:#8dffc1;background:rgba(60,255,160,.09)}.notice.error{display:block;color:#ff9baa;background:rgba(255,60,90,.1)}
-.history{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.historyItem{position:relative;aspect-ratio:1;overflow:hidden;border-radius:15px;background:var(--card)}.historyItem img{width:100%;height:100%;object-fit:cover}
-.overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.82);backdrop-filter:blur(12px)}.overlay.show{display:flex}
-.spotlight{width:100%;max-width:520px;padding:17px 17px 28px;border-radius:28px 28px 0 0;background:radial-gradient(circle at top,#482276 0,transparent 40%),#130f1c;border:1px solid var(--border);animation:slideUp .4s ease}@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.spotHeader{display:flex;align-items:center;justify-content:space-between}.spotTag{color:#d6b8ff;font-size:11px;font-weight:900}.closeBtn{width:35px;height:35px;border:0;border-radius:50%;background:rgba(255,255,255,.08);color:white;font-size:18px}
-.profileArea{padding:15px 0 10px;text-align:center}.profilePhoto{width:94px;height:94px;margin:auto;padding:3px;border-radius:50%;background:linear-gradient(45deg,#ffd76a,#ff4fce,#a35cff)}.profilePhoto img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:4px solid #130f1c}
-.spotType{display:inline-block;margin-top:13px;padding:5px 8px;border-radius:10px;background:rgba(255,255,255,.06);color:var(--gold);font-size:9px;font-weight:900}.profileArea h2{margin:8px 0 3px}.username{color:#c4b9cf;font-size:13px}.spotMessage{margin:8px 15px 17px;color:var(--muted);text-align:center;font-size:13px;line-height:1.5}
-.missionReward{text-align:center;margin:10px 0;padding:10px;border-radius:14px;background:rgba(255,215,106,.08);font-size:12px}.instagramBtn{background:linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045)}.secondaryBtn{width:100%;margin-top:8px;padding:12px;border:1px solid var(--border);border-radius:14px;background:transparent;color:var(--muted)}
-.spotFooter{margin-top:12px;color:#716a7a;text-align:center;font-size:9px}.confetti{position:fixed;z-index:2000;top:-30px;pointer-events:none;font-size:21px;animation:fall 2.5s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-@media(min-width:700px){.overlay{align-items:center}.spotlight{border-radius:28px}}
+:root{
+--bg:#09070f;
+--card:#15111f;
+--card2:#1d1729;
+--purple:#a35cff;
+--pink:#ff4fce;
+--gold:#ffd76a;
+--green:#69efad;
+--text:#fff;
+--muted:#aaa2b7;
+--border:rgba(255,255,255,.09)
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+html{scroll-behavior:smooth}
+
+body{
+margin:0;
+min-height:100vh;
+background:
+radial-gradient(circle at 50% -10%,#32165c 0,transparent 30%),
+var(--bg);
+color:var(--text);
+font-family:Arial,Helvetica,sans-serif
+}
+
+button,textarea,select{font:inherit}
+button{cursor:pointer}
+
+header{
+position:sticky;
+top:0;
+z-index:50;
+min-height:64px;
+padding:8px 14px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px;
+background:rgba(9,7,15,.9);
+backdrop-filter:blur(18px);
+border-bottom:1px solid var(--border)
+}
+
+.logo{
+font-size:15px;
+font-weight:900;
+white-space:nowrap
+}
+
+.logo span,.gradient{
+background:linear-gradient(90deg,var(--purple),var(--pink),var(--gold));
+-webkit-background-clip:text;
+color:transparent
+}
+
+.wallet{display:flex;gap:5px}
+
+.walletItem{
+padding:8px 9px;
+border-radius:13px;
+background:var(--card2);
+border:1px solid var(--border);
+font-size:11px;
+font-weight:bold
+}
+
+main{
+width:100%;
+max-width:650px;
+margin:auto;
+padding:16px 14px 100px
+}
+
+.hero{padding:20px 3px 12px}
+
+.badge{
+display:inline-block;
+padding:7px 10px;
+border-radius:20px;
+background:rgba(163,92,255,.14);
+color:#d1b4ff;
+font-size:10px;
+font-weight:bold
+}
+
+h1{
+margin:15px 0 10px;
+font-size:40px;
+line-height:.95;
+letter-spacing:-2px
+}
+
+.hero p{
+color:var(--muted);
+font-size:14px;
+line-height:1.5
+}
+
+.card{
+margin-bottom:14px;
+padding:16px;
+border-radius:22px;
+background:linear-gradient(145deg,#171220,#100d17);
+border:1px solid var(--border);
+box-shadow:0 18px 50px rgba(0,0,0,.25)
+}
+
+.sectionTitle{
+margin:25px 2px 12px;
+font-size:18px
+}
+
+.dailyMission{
+position:relative;
+overflow:hidden
+}
+
+.dailyMission:before{
+content:"";
+position:absolute;
+width:180px;
+height:180px;
+border-radius:50%;
+background:var(--purple);
+filter:blur(100px);
+opacity:.18;
+right:-80px;
+top:-80px
+}
+
+.missionTop,.progressTop,.magicTop{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px
+}
+
+.missionLabel{
+color:var(--gold);
+font-size:10px;
+font-weight:900
+}
+
+.streak{
+padding:7px 9px;
+border-radius:12px;
+background:rgba(255,150,60,.12);
+color:#ffb066;
+font-size:11px;
+font-weight:bold
+}
+
+.themeIcon{
+position:relative;
+margin-top:17px;
+font-size:43px
+}
+
+.dailyMission h2{
+position:relative;
+margin:7px 0;
+font-size:24px
+}
+
+.dailyMission p{
+position:relative;
+margin:0;
+color:var(--muted);
+font-size:13px;
+line-height:1.5
+}
+
+.rewardBox{
+position:relative;
+display:flex;
+gap:7px;
+margin-top:14px;
+flex-wrap:wrap
+}
+
+.reward{
+padding:8px 10px;
+border-radius:11px;
+background:rgba(255,255,255,.05);
+border:1px solid var(--border);
+font-size:11px;
+font-weight:bold
+}
+
+.missionStatus{
+position:relative;
+margin-top:13px;
+padding:12px;
+border-radius:14px;
+background:#0c0912;
+border:1px solid var(--border)
+}
+
+.progressTop{
+margin-bottom:8px;
+color:var(--muted);
+font-size:11px
+}
+
+.progress{
+height:7px;
+border-radius:10px;
+background:#25202e;
+overflow:hidden
+}
+
+.progressFill{
+width:0;
+height:100%;
+background:linear-gradient(90deg,var(--purple),var(--pink));
+transition:.4s
+}
+
+.missionBtn,.generateBtn,.instagramBtn,.claimBtn{
+width:100%;
+margin-top:11px;
+padding:14px;
+border:0;
+border-radius:14px;
+color:white;
+font-weight:900;
+background:linear-gradient(90deg,#7542bd,#b33d9e)
+}
+
+.missionBtn.claim,.claimBtn{
+background:linear-gradient(90deg,#d39b28,#ffc34d);
+color:#1b1100
+}
+
+.magicBar{
+display:none;
+position:sticky;
+top:73px;
+z-index:40;
+margin-bottom:14px;
+padding:13px 14px;
+border-radius:18px;
+background:linear-gradient(135deg,#27153d,#171020);
+border:1px solid rgba(190,112,255,.28);
+box-shadow:0 12px 30px rgba(0,0,0,.3)
+}
+
+.magicBar.show{display:block}
+
+.magicName{
+font-size:12px;
+font-weight:900
+}
+
+.magicTimer{
+font-size:20px;
+font-weight:900;
+color:var(--gold)
+}
+
+.magicMeta{
+margin:8px 0;
+color:var(--muted);
+font-size:10px
+}
+
+.magicProgress{
+height:6px;
+background:#33283d;
+border-radius:10px;
+overflow:hidden
+}
+
+.magicProgress div{
+height:100%;
+width:0;
+background:linear-gradient(90deg,var(--purple),var(--pink));
+transition:width 1s linear
+}
+
+.meterCard{padding:14px 16px}
+
+.meterTitle{
+display:flex;
+justify-content:space-between;
+gap:10px;
+font-size:11px;
+font-weight:900
+}
+
+.meterTitle span:last-child{color:var(--gold)}
+
+.meterText{
+margin:8px 0;
+color:var(--muted);
+font-size:11px
+}
+
+.pulseGlow{
+animation:pulseGlow 1.2s ease-in-out infinite alternate
+}
+
+@keyframes pulseGlow{
+to{box-shadow:0 0 35px rgba(255,79,206,.35)}
+}
+
+textarea{
+width:100%;
+min-height:130px;
+padding:15px;
+resize:none;
+border-radius:16px;
+background:#0b0910;
+border:1px solid var(--border);
+color:white;
+outline:none;
+line-height:1.5
+}
+
+textarea:focus{border-color:var(--purple)}
+
+select{
+width:100%;
+margin-top:9px;
+padding:13px;
+border-radius:14px;
+background:#0b0910;
+border:1px solid var(--border);
+color:white;
+outline:none
+}
+
+.generateBtn{
+background:linear-gradient(90deg,var(--purple),var(--pink));
+box-shadow:0 10px 30px rgba(163,92,255,.25)
+}
+
+.generateBtn:disabled{opacity:.5}
+
+.preview{
+min-height:350px;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+border-radius:18px;
+background:#09070d;
+border:1px dashed rgba(255,255,255,.13)
+}
+
+.preview img{
+display:block;
+width:100%;
+max-height:600px;
+object-fit:contain
+}
+
+.empty{
+padding:30px 20px;
+color:var(--muted);
+text-align:center;
+font-size:13px
+}
+
+.emptyIcon{
+margin-bottom:12px;
+font-size:50px
+}
+
+.loader{
+width:44px;
+height:44px;
+margin:0 auto 15px;
+border:4px solid rgba(255,255,255,.08);
+border-top-color:var(--pink);
+border-radius:50%;
+animation:spin .8s linear infinite
+}
+
+@keyframes spin{
+to{transform:rotate(360deg)}
+}
+
+.imageActions{
+display:none;
+gap:8px;
+margin-top:10px
+}
+
+.imageActions button{
+flex:1;
+padding:12px;
+border-radius:13px;
+background:var(--card2);
+border:1px solid var(--border);
+color:white;
+font-weight:bold
+}
+
+.notice{
+display:none;
+margin-top:10px;
+padding:11px;
+border-radius:12px;
+font-size:12px
+}
+
+.notice.success{
+display:block;
+color:#8dffc1;
+background:rgba(60,255,160,.09)
+}
+
+.notice.error{
+display:block;
+color:#ff9baa;
+background:rgba(255,60,90,.1)
+}
+
+.history{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:8px
+}
+
+.historyItem{
+position:relative;
+aspect-ratio:1;
+overflow:hidden;
+border-radius:15px;
+background:var(--card)
+}
+
+.historyItem img{
+width:100%;
+height:100%;
+object-fit:cover
+}
+
+.overlay{
+position:fixed;
+inset:0;
+z-index:1000;
+display:none;
+align-items:flex-end;
+justify-content:center;
+background:rgba(0,0,0,.82);
+backdrop-filter:blur(12px)
+}
+
+.overlay.show{display:flex}
+
+.spotlight{
+width:100%;
+max-width:520px;
+padding:17px 17px 28px;
+border-radius:28px 28px 0 0;
+background:
+radial-gradient(circle at top,#482276 0,transparent 40%),
+#130f1c;
+border:1px solid var(--border);
+animation:slideUp .4s ease
+}
+
+@keyframes slideUp{
+from{transform:translateY(100%)}
+to{transform:translateY(0)}
+}
+
+.spotHeader{
+display:flex;
+align-items:center;
+justify-content:space-between
+}
+
+.spotTag{
+color:#d6b8ff;
+font-size:11px;
+font-weight:900
+}
+
+.closeBtn{
+width:35px;
+height:35px;
+border:0;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+color:white;
+font-size:18px
+}
+
+.profileArea{
+padding:15px 0 10px;
+text-align:center
+}
+
+.profilePhoto{
+width:94px;
+height:94px;
+margin:auto;
+padding:3px;
+border-radius:50%;
+background:linear-gradient(45deg,#ffd76a,#ff4fce,#a35cff)
+}
+
+.profilePhoto img{
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:50%;
+border:4px solid #130f1c
+}
+
+.spotType{
+display:inline-block;
+margin-top:13px;
+padding:5px 8px;
+border-radius:10px;
+background:rgba(255,255,255,.06);
+color:var(--gold);
+font-size:9px;
+font-weight:900
+}
+
+.profileArea h2{margin:8px 0 3px}
+
+.username{
+color:#c4b9cf;
+font-size:13px
+}
+
+.spotMessage{
+margin:8px 15px 17px;
+color:var(--muted);
+text-align:center;
+font-size:13px;
+line-height:1.5
+}
+
+.missionReward{
+text-align:center;
+margin:10px 0;
+padding:10px;
+border-radius:14px;
+background:rgba(255,215,106,.08);
+font-size:12px
+}
+
+.instagramBtn{
+background:linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045)
+}
+
+.secondaryBtn{
+width:100%;
+margin-top:8px;
+padding:12px;
+border:1px solid var(--border);
+border-radius:14px;
+background:transparent;
+color:var(--muted)
+}
+
+.spotFooter{
+margin-top:12px;
+color:#716a7a;
+text-align:center;
+font-size:9px
+}
+
+.confetti{
+position:fixed;
+z-index:2000;
+top:-30px;
+pointer-events:none;
+font-size:21px;
+animation:fall 2.5s linear forwards
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(720deg);
+opacity:0
+}
+}
+
+@media(min-width:700px){
+.overlay{align-items:center}
+.spotlight{border-radius:28px}
+}
 </style>
 </head>
+
 <body>
-<header><div class="logo">✨ <span>MAGIC AI</span></div><div class="wallet"><div class="walletItem">⚡ <span id="energy">5</span></div><div class="walletItem">💎 <span id="points">0</span></div><div class="walletItem">✨ <span id="meterHeader">0</span>%</div></div></header>
+
+<header>
+<div class="logo">✨ <span>MAGIC AI</span></div>
+
+<div class="wallet">
+<div class="walletItem">⚡ <span id="energy">5</span></div>
+<div class="walletItem">💎 <span id="points">0</span></div>
+<div class="walletItem">✨ <span id="meterHeader">0</span>%</div>
+</div>
+</header>
+
 <main>
-<div class="magicBar" id="magicBar"><div class="magicTop"><div><div class="magicName" id="activeMissionName">✨ Magic Mission activa</div><div class="magicMeta" id="activeMissionMeta">Completa la misión y sigue creando.</div></div><div class="magicTimer" id="magicTimer">04:00</div></div><div class="magicProgress"><div id="magicProgressFill"></div></div><button class="claimBtn" id="quickClaimBtn" style="display:none" onclick="claimMagicMission()">🎁 RECLAMAR +10 VIP</button></div>
+
+<div class="magicBar" id="magicBar">
+<div class="magicTop">
+<div>
+<div class="magicName" id="activeMissionName">✨ Magic Mission activa</div>
+<div class="magicMeta" id="activeMissionMeta">Completa la misión y sigue creando.</div>
+</div>
+
+<div class="magicTimer" id="magicTimer">04:00</div>
+</div>
+
+<div class="magicProgress">
+<div id="magicProgressFill"></div>
+</div>
+
+<button class="claimBtn" id="quickClaimBtn" style="display:none" onclick="claimMagicMission()">
+🎁 RECLAMAR RECOMPENSA
+</button>
+</div>
+
 <section class="card meterCard">
-<div class="meterTitle"><span>✨ MAGIC METER</span><span id="meterPercent">0%</span></div>
-<div class="meterText" id="meterText">Completa Magic Missions para activar un Magic Boost.</div>
-<div class="progress"><div class="progressFill" id="meterFill"></div></div>
+<div class="meterTitle">
+<span>✨ MAGIC METER</span>
+<span id="meterPercent">0%</span>
+</div>
+
+<div class="meterText" id="meterText">
+Completa Magic Missions para activar un Magic Boost.
+</div>
+
+<div class="progress">
+<div class="progressFill" id="meterFill"></div>
+</div>
 </section>
-<section class="hero"><span class="badge">✦ AGENCIA MAGIC EXPERIENCE</span><h1>Imagina.<br><span class="gradient">Crea magia.</span></h1><p>Convierte tus ideas en imágenes, completa desafíos y descubre talentos Magic.</p></section>
-<section class="card dailyMission"><div class="missionTop"><span class="missionLabel">✦ MISIÓN CREATIVA DEL DÍA</span><span class="streak">🔥 <span id="streak">0</span> días</span></div><div class="themeIcon" id="themeIcon">✨</div><h2 id="themeName">Cargando misión...</h2><p id="themeDescription"></p><div class="rewardBox"><div class="reward">⚡ +3 Energía</div><div class="reward">💎 +20 VIP</div></div><div class="missionStatus"><div class="progressTop"><span id="missionText">Genera una imagen temática</span><span id="missionCount">0/1</span></div><div class="progress"><div class="progressFill" id="progressFill"></div></div></div><button class="missionBtn" id="missionBtn" onclick="missionAction()">🎨 CREAR PARA LA MISIÓN</button></section>
+
+<section class="hero">
+<span class="badge">✦ AGENCIA MAGIC EXPERIENCE</span>
+
+<h1>
+Imagina.<br>
+<span class="gradient">Crea magia.</span>
+</h1>
+
+<p>
+Convierte tus ideas en imágenes, completa desafíos y descubre talentos Magic.
+</p>
+</section>
+
+<section class="card dailyMission">
+
+<div class="missionTop">
+<span class="missionLabel">✦ MISIÓN CREATIVA DEL DÍA</span>
+<span class="streak">🔥 <span id="streak">0</span> días</span>
+</div>
+
+<div class="themeIcon" id="themeIcon">✨</div>
+
+<h2 id="themeName">Cargando misión...</h2>
+
+<p id="themeDescription"></p>
+
+<div class="rewardBox">
+<div class="reward">⚡ +3 Energía</div>
+<div class="reward">💎 +20 VIP</div>
+</div>
+
+<div class="missionStatus">
+
+<div class="progressTop">
+<span id="missionText">Genera una imagen temática</span>
+<span id="missionCount">0/1</span>
+</div>
+
+<div class="progress">
+<div class="progressFill" id="progressFill"></div>
+</div>
+
+</div>
+
+<button class="missionBtn" id="missionBtn" onclick="missionAction()">
+🎨 CREAR PARA LA MISIÓN
+</button>
+
+</section>
+
 <h2 class="sectionTitle">✨ Estudio Creativo</h2>
-<section class="card"><textarea id="prompt" placeholder="Describe la imagen que quieres crear..."></textarea><select id="style"><option value="">✨ Estilo automático</option><option value="photorealistic, cinematic lighting, ultra detailed">📸 Realista</option><option value="luxury fashion editorial, professional photography">👑 VIP Fashion</option><option value="anime style, detailed illustration">🎌 Anime</option><option value="fantasy art, magical atmosphere">🔮 Fantasía</option><option value="cyberpunk, futuristic neon lighting">🌃 Cyberpunk</option><option value="professional sports photography, dynamic">⚽ Deportivo</option></select><button class="generateBtn" id="generateBtn" onclick="generateImage()">✨ GENERAR IMAGEN · 1 ⚡</button><div id="notice" class="notice"></div></section>
-<section class="card"><div class="preview" id="preview"><div class="empty"><div class="emptyIcon">✦</div><b>Tu creación aparecerá aquí</b><p>Describe una idea y activa la magia.</p></div></div><div class="imageActions" id="imageActions"><button onclick="downloadImage()">⬇ Guardar</button><button onclick="reusePrompt()">✨ Crear otra</button></div></section>
-<h2 class="sectionTitle">🎨 Mis Creaciones</h2><section class="history" id="history"></section>
+
+<section class="card">
+
+<textarea id="prompt" placeholder="Describe la imagen que quieres crear..."></textarea>
+
+<select id="style">
+<option value="">✨ Estilo automático</option>
+<option value="photorealistic, cinematic lighting, ultra detailed">📸 Realista</option>
+<option value="luxury fashion editorial, professional photography">👑 VIP Fashion</option>
+<option value="anime style, detailed illustration">🎌 Anime</option>
+<option value="fantasy art, magical atmosphere">🔮 Fantasía</option>
+<option value="cyberpunk, futuristic neon lighting">🌃 Cyberpunk</option>
+<option value="professional sports photography, dynamic">⚽ Deportivo</option>
+</select>
+
+<button class="generateBtn" id="generateBtn" onclick="generateImage()">
+✨ GENERAR IMAGEN · 1 ⚡
+</button>
+
+<div id="notice" class="notice"></div>
+
+</section>
+
+<section class="card">
+
+<div class="preview" id="preview">
+
+<div class="empty">
+<div class="emptyIcon">✦</div>
+<b>Tu creación aparecerá aquí</b>
+<p>Describe una idea y activa la magia.</p>
+</div>
+
+</div>
+
+<div class="imageActions" id="imageActions">
+<button onclick="downloadImage()">⬇ Guardar</button>
+<button onclick="reusePrompt()">✨ Crear otra</button>
+</div>
+
+</section>
+
+<h2 class="sectionTitle">🎨 Mis Creaciones</h2>
+
+<section class="history" id="history"></section>
+
 </main>
-<div class="overlay" id="spotlightOverlay"><div class="spotlight"><div class="spotHeader"><span class="spotTag">✨ MAGIC MISSION</span><button class="closeBtn" onclick="closeSpotlight()">×</button></div><div class="profileArea"><div class="profilePhoto"><img id="talentPhoto" alt="Talento Magic"></div><div class="spotType" id="spotType">TALENTO DESTACADO</div><h2 id="talentName"></h2><div class="username" id="talentUsername"></div></div><p class="spotMessage" id="spotMessage"></p><div class="missionReward" id="spotReward">💎 Recompensa Magic · ✨ Carga el Magic Meter</div><button class="instagramBtn" id="instagramBtn">✨ INICIAR MISIÓN</button><button class="secondaryBtn" onclick="closeSpotlight()">Ahora no</button><div class="spotFooter">La misión continúa mientras visitas Instagram. Magic Pulse controla nuevas apariciones.</div></div></div>
+
+<div class="overlay" id="spotlightOverlay">
+
+<div class="spotlight">
+
+<div class="spotHeader">
+<span class="spotTag">✨ MAGIC MISSION</span>
+<button class="closeBtn" onclick="closeSpotlight()">×</button>
+</div>
+
+<div class="profileArea">
+
+<div class="profilePhoto">
+<img id="talentPhoto" alt="Talento Magic">
+</div>
+
+<div class="spotType" id="spotType">TALENTO DESTACADO</div>
+
+<h2 id="talentName"></h2>
+
+<div class="username" id="talentUsername"></div>
+
+</div>
+
+<p class="spotMessage" id="spotMessage"></p>
+
+<div class="missionReward" id="spotReward">
+💎 Recompensa Magic · ✨ Carga el Magic Meter
+</div>
+
+<button class="instagramBtn" id="instagramBtn">
+✨ INICIAR MISIÓN
+</button>
+
+<button class="secondaryBtn" onclick="closeSpotlight()">
+Ahora no
+</button>
+
+<div class="spotFooter">
+La misión continúa mientras visitas Instagram.
+</div>
+
+</div>
+
+</div>
+
 <script>
 const API_URL="https://magic-ai-studio.anedilone27.workers.dev/generate";
-const MAGIC_MISSION_TIME=4*60*1000, FIRST_PULSE_DELAY=30*1000, RETURN_DELAY_MIN=20*1000, RETURN_DELAY_MAX=45*1000;
+
+const MAGIC_MISSION_TIME=4*60*1000;
+const FIRST_PULSE_DELAY=30*1000;
+const RETURN_DELAY_MIN=20*1000;
+const RETURN_DELAY_MAX=45*1000;
+
 const TALENTOS=[
-{nombre:"Luna Valentina",usuario:"@lunavalentina.magic",foto:"https://i.pravatar.cc/500?img=47",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/","https://www.instagram.com/"]},
-{nombre:"Alex Storm",usuario:"@alexstorm.magic",foto:"https://i.pravatar.cc/500?img=12",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/","https://www.instagram.com/"]},
-{nombre:"Mía Golden",usuario:"@miagolden.vip",foto:"https://i.pravatar.cc/500?img=45",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/"]},
-{nombre:"Dylan Black",usuario:"@dylanblack.magic",foto:"https://i.pravatar.cc/500?img=11",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/","https://www.instagram.com/"]},
-{nombre:"Sofía Rose",usuario:"@sofiarose.vip",foto:"https://i.pravatar.cc/500?img=44",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/"]},
-{nombre:"Leo Phoenix",usuario:"@leophoenix.magic",foto:"https://i.pravatar.cc/500?img=13",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/","https://www.instagram.com/"]},
-{nombre:"Valeria Moon",usuario:"@valeriamoon.magic",foto:"https://i.pravatar.cc/500?img=49",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/","https://www.instagram.com/"]},
-{nombre:"Nico Savage",usuario:"@nicosavage.vip",foto:"https://i.pravatar.cc/500?img=14",perfil:"https://www.instagram.com/",publicaciones:["https://www.instagram.com/"]}
+{
+nombre:"Luna Valentina",
+usuario:"@lunavalentina.magic",
+foto:"https://i.pravatar.cc/500?img=47",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+},
+{
+nombre:"Alex Storm",
+usuario:"@alexstorm.magic",
+foto:"https://i.pravatar.cc/500?img=12",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+},
+{
+nombre:"Mía Golden",
+usuario:"@miagolden.vip",
+foto:"https://i.pravatar.cc/500?img=45",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+},
+{
+nombre:"Dylan Black",
+usuario:"@dylanblack.magic",
+foto:"https://i.pravatar.cc/500?img=11",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+},
+{
+nombre:"Sofía Rose",
+usuario:"@sofiarose.vip",
+foto:"https://i.pravatar.cc/500?img=44",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+},
+{
+nombre:"Leo Phoenix",
+usuario:"@leophoenix.magic",
+foto:"https://i.pravatar.cc/500?img=13",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+},
+{
+nombre:"Valeria Moon",
+usuario:"@valeriamoon.magic",
+foto:"https://i.pravatar.cc/500?img=49",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+},
+{
+nombre:"Nico Savage",
+usuario:"@nicosavage.vip",
+foto:"https://i.pravatar.cc/500?img=14",
+perfil:"https://www.instagram.com/",
+publicaciones:["https://www.instagram.com/"]
+}
 ];
+
 const THEMES=[
-{icon:"🧜‍♂️",name:"Reino Bajo el Mar",description:"Crea un personaje o escenario inspirado en un reino submarino mágico.",prompt:"reino submarino mágico mundo bajo el mar fantasía cinematográfica"},
-{icon:"⚽",name:"Futbolista del Futuro",description:"Imagina una estrella del fútbol perteneciente a una era futurista.",prompt:"futbolista profesional del futuro estadio futurista fotografía deportiva"},
-{icon:"👑",name:"Gala Real Magic",description:"Diseña un personaje preparado para una gala elegante y extraordinaria.",prompt:"gala real elegante ropa de lujo fotografía editorial cinematográfica"},
-{icon:"🏴‍☠️",name:"Leyenda Pirata",description:"Crea un personaje perteneciente a una aventura pirata legendaria.",prompt:"pirata legendario barco épico aventura cinematográfica"},
-{icon:"🐉",name:"Guardián de Dragones",description:"Imagina un poderoso personaje conectado con dragones mágicos.",prompt:"guardián de dragones fantasía épica mundo mágico cinematográfico"},
-{icon:"🌌",name:"Viajero Galáctico",description:"Explora visualmente los límites de una galaxia desconocida.",prompt:"viajero galáctico espacio profundo ciencia ficción cinematográfica"},
-{icon:"🦸",name:"Héroe Magic",description:"Diseña un héroe completamente original con poderes extraordinarios.",prompt:"superhéroe original poderes mágicos escena épica cinematográfica"},
-{icon:"🏀",name:"Leyenda del Basketball",description:"Crea una estrella dominando una cancha espectacular.",prompt:"jugador profesional basketball estadio lleno fotografía deportiva"},
-{icon:"🌃",name:"Ciudad Cyberpunk",description:"Imagina un personaje viviendo en una gran metrópolis de neón.",prompt:"personaje cyberpunk ciudad futurista luces neon cinematográfico"},
-{icon:"🧙",name:"Academia de Magia",description:"Crea un estudiante o maestro de una misteriosa academia mágica.",prompt:"academia magia hechicero fantasía cinematográfica"},
-{icon:"⚔️",name:"Guerrero Legendario",description:"Diseña un guerrero perteneciente a un reino fantástico.",prompt:"guerrero legendario reino fantástico armadura épica"},
-{icon:"🤖",name:"Humano del Año 3000",description:"Imagina la evolución visual de la humanidad en un futuro lejano.",prompt:"humano año 3000 moda futurista ciencia ficción realista"}
+{
+icon:"🧜‍♂️",
+name:"Reino Bajo el Mar",
+description:"Crea un personaje o escenario inspirado en un reino submarino mágico.",
+prompt:"reino submarino mágico mundo bajo el mar fantasía cinematográfica"
+},
+{
+icon:"⚽",
+name:"Futbolista del Futuro",
+description:"Imagina una estrella del fútbol perteneciente a una era futurista.",
+prompt:"futbolista profesional del futuro estadio futurista fotografía deportiva"
+},
+{
+icon:"👑",
+name:"Gala Real Magic",
+description:"Diseña un personaje preparado para una gala elegante.",
+prompt:"gala real elegante ropa de lujo fotografía editorial cinematográfica"
+},
+{
+icon:"🏴‍☠️",
+name:"Leyenda Pirata",
+description:"Crea un personaje perteneciente a una aventura pirata legendaria.",
+prompt:"pirata legendario barco épico aventura cinematográfica"
+},
+{
+icon:"🐉",
+name:"Guardián de Dragones",
+description:"Imagina un poderoso personaje conectado con dragones mágicos.",
+prompt:"guardián de dragones fantasía épica mundo mágico cinematográfico"
+},
+{
+icon:"🌌",
+name:"Viajero Galáctico",
+description:"Explora visualmente una galaxia desconocida.",
+prompt:"viajero galáctico espacio profundo ciencia ficción cinematográfica"
+},
+{
+icon:"🦸",
+name:"Héroe Magic",
+description:"Diseña un héroe original con poderes extraordinarios.",
+prompt:"superhéroe original poderes mágicos escena épica cinematográfica"
+},
+{
+icon:"🏀",
+name:"Leyenda del Basketball",
+description:"Crea una estrella dominando una cancha espectacular.",
+prompt:"jugador profesional basketball estadio lleno fotografía deportiva"
+},
+{
+icon:"🌃",
+name:"Ciudad Cyberpunk",
+description:"Imagina un personaje viviendo en una metrópolis de neón.",
+prompt:"personaje cyberpunk ciudad futurista luces neon cinematográfico"
+},
+{
+icon:"🧙",
+name:"Academia de Magia",
+description:"Crea un estudiante o maestro de una academia mágica.",
+prompt:"academia magia hechicero fantasía cinematográfica"
+},
+{
+icon:"⚔️",
+name:"Guerrero Legendario",
+description:"Diseña un guerrero perteneciente a un reino fantástico.",
+prompt:"guerrero legendario reino fantástico armadura épica"
+},
+{
+icon:"🤖",
+name:"Humano del Año 3000",
+description:"Imagina la evolución visual de la humanidad.",
+prompt:"humano año 3000 moda futurista ciencia ficción realista"
+}
 ];
-const defaultState={energy:5,points:0,day:"",missionGenerated:false,missionClaimed:false,streak:0,lastMissionDay:"",history:[],lastTalentIndex:-1,magicMission:null,magicMeter:0,sessionActions:0,firstPulseUnlocked:false,nextPulseAt:0,pendingPulse:false,pulseShowAt:0,dailyMagicMissions:0,magicMissionDay:""};
-let state=loadState(),currentImage=null,pendingMagicMission=null,activeTime=0;
-function loadState(){try{return {...defaultState,...(JSON.parse(localStorage.getItem("magicAIState"))||{})}}catch{return {...defaultState}}}
-function saveState(){localStorage.setItem("magicAIState",JSON.stringify(state));updateUI()}
-function getDayKey(d=new Date()){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function getYesterdayKey(){let d=new Date();d.setDate(d.getDate()-1);return getDayKey(d)}
-function checkNewDay(){let today=getDayKey();if(state.day!==today){state.day=today;state.missionGenerated=false;state.missionClaimed=false;state.energy=Math.max(state.energy,5);saveState()}}
-function getDailyTheme(){let d=new Date(),s=new Date(d.getFullYear(),0,0),day=Math.floor((d-s)/86400000);return THEMES[day%THEMES.length]}
-function renderMission(){let t=getDailyTheme(),b=document.getElementById("missionBtn"),p=document.getElementById("progressFill"),c=document.getElementById("missionCount"),x=document.getElementById("missionText");themeIcon.textContent=t.icon;themeName.textContent=t.name;themeDescription.textContent=t.description;streak.textContent=state.streak;if(state.missionClaimed){p.style.width="100%";c.textContent="✓";x.textContent="Misión completada";b.textContent="✓ MISIÓN COMPLETADA";b.className="missionBtn";b.disabled=true}else if(state.missionGenerated){p.style.width="100%";c.textContent="1/1";x.textContent="¡Imagen creada!";b.textContent="🎁 RECLAMAR RECOMPENSA";b.className="missionBtn claim";b.disabled=false}else{p.style.width="0%";c.textContent="0/1";x.textContent="Genera una imagen temática";b.textContent="🎨 CREAR PARA LA MISIÓN";b.className="missionBtn";b.disabled=false}}
-function missionAction(){registerAction();if(state.missionGenerated&&!state.missionClaimed)return claimMission();let t=getDailyTheme();prompt.value="Crea una imagen de "+t.prompt+", alta calidad, muy detallada";prompt.scrollIntoView({behavior:"smooth",block:"center"});showNotice("✨ Misión preparada. Puedes personalizar la imagen.","success")}
-function claimMission(){if(!state.missionGenerated||state.missionClaimed)return;updateStreak();state.energy+=3;state.points+=20;state.missionClaimed=true;saveState();createConfetti();showNotice("🎉 +3 Energía y +20 Puntos VIP.","success")}
-function updateStreak(){if(state.lastMissionDay===getYesterdayKey())state.streak++;else if(state.lastMissionDay!==getDayKey())state.streak=1;state.lastMissionDay=getDayKey()}
-async function generateImage(){let p=prompt.value.trim(),s=style.value;if(!p)return showNotice("Escribe una descripción.","error");registerAction();if(state.energy<=0)return showNotice("No tienes Energía Magic.","error");let finalPrompt=s?p+", "+s:p,b=generateBtn;b.disabled=true;b.textContent="✨ CREANDO MAGIA...";preview.innerHTML='<div class="empty"><div class="loader"></div><b>La IA está creando...</b><p>Transformando tu idea en una imagen.</p></div>';try{let r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:finalPrompt})});if(!r.ok)throw new Error("Servidor IA: "+r.status);let ct=r.headers.get("content-type")||"",url;if(ct.includes("application/json")){let d=await r.json();url=d.image||d.url||(Array.isArray(d.output)?d.output[0]:d.output);if(!url)throw new Error(d.error||d.message||"La IA no devolvió imagen.")}else{let blob=await r.blob();if(!blob.type.startsWith("image/"))throw new Error("Respuesta de imagen no válida.");url=URL.createObjectURL(blob)}currentImage=url;preview.innerHTML="";let img=document.createElement("img");img.src=url;img.alt="Creación Magic AI";preview.appendChild(img);imageActions.style.display="flex";state.energy--;checkMissionPrompt(p);addHistory(url,p);saveState();showNotice("✨ Imagen creada correctamente.","success")}catch(e){preview.innerHTML='<div class="empty"><div class="emptyIcon">⚠️</div><b>No se pudo generar</b><p>'+escapeHTML(e.message)+'</p></div>';showNotice(e.message,"error")}finally{b.disabled=false;b.textContent="✨ GENERAR IMAGEN · 1 ⚡"}}
-function checkMissionPrompt(p){if(state.missionGenerated||state.missionClaimed)return;let words=getDailyTheme().prompt.toLowerCase().split(/\s+/).filter(w=>w.length>5),u=p.toLowerCase();if(words.filter(w=>u.includes(w)).length>=2){state.missionGenerated=true;showNotice("🎯 ¡Creación válida para la misión!","success")}}
-function addHistory(image,promptText){state.history.unshift({image,prompt:promptText,date:Date.now()});state.history=state.history.slice(0,8)}
-function renderHistory(){history.innerHTML="";if(!state.history.length){history.innerHTML='<div style="grid-column:1/-1;color:#aaa2b7;font-size:13px">Aún no tienes creaciones.</div>';return}state.history.forEach(item=>{let d=document.createElement("div");d.className="historyItem";let i=document.createElement("img");i.src=item.image;i.onerror=()=>d.remove();i.onclick=()=>{currentImage=item.image;preview.innerHTML='<img src="'+item.image+'" alt="Creación Magic AI">';imageActions.style.display="flex";preview.scrollIntoView({behavior:"smooth",block:"center"})};d.appendChild(i);history.appendChild(d)})}
-async function downloadImage(){if(!currentImage)return;registerAction();try{let r=await fetch(currentImage),blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="magic-ai-"+Date.now()+".png";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}catch{window.open(currentImage,"_blank")}}
-function reusePrompt(){registerAction();prompt.scrollIntoView({behavior:"smooth",block:"center"});prompt.focus()}
-function randomBetween(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+
+const defaultState={
+energy:5,
+points:0,
+day:"",
+missionGenerated:false,
+missionClaimed:false,
+streak:0,
+lastMissionDay:"",
+history:[],
+lastTalentIndex:-1,
+magicMission:null,
+magicMeter:0,
+sessionActions:0,
+firstPulseUnlocked:false,
+nextPulseAt:0,
+pendingPulse:false,
+pulseShowAt:0,
+dailyMagicMissions:0,
+magicMissionDay:""
+};
+
+let state=loadState();
+let currentImage=null;
+let pendingMagicMission=null;
+
+function loadState(){
+try{
+return {
+...defaultState,
+...(JSON.parse(localStorage.getItem("magicAIState"))||{})
+};
+}catch{
+return {...defaultState};
+}
+}
+
+function saveState(){
+localStorage.setItem("magicAIState",JSON.stringify(state));
+updateUI();
+}
+
+function getDayKey(d=new Date()){
+return d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0")+"-"+
+String(d.getDate()).padStart(2,"0");
+}
+
+function getYesterdayKey(){
+let d=new Date();
+d.setDate(d.getDate()-1);
+return getDayKey(d);
+}
+
+function checkNewDay(){
+let today=getDayKey();
+
+if(state.day!==today){
+state.day=today;
+state.missionGenerated=false;
+state.missionClaimed=false;
+state.energy=Math.max(state.energy,5);
+saveState();
+}
+}
+
+function getDailyTheme(){
+let d=new Date();
+let start=new Date(d.getFullYear(),0,0);
+let day=Math.floor((d-start)/86400000);
+return THEMES[day%THEMES.length];
+}
+
+function renderMission(){
+let t=getDailyTheme();
+let b=document.getElementById("missionBtn");
+
+themeIcon.textContent=t.icon;
+themeName.textContent=t.name;
+themeDescription.textContent=t.description;
+streak.textContent=state.streak;
+
+if(state.missionClaimed){
+progressFill.style.width="100%";
+missionCount.textContent="✓";
+missionText.textContent="Misión completada";
+b.textContent="✓ MISIÓN COMPLETADA";
+b.className="missionBtn";
+b.disabled=true;
+}
+else if(state.missionGenerated){
+progressFill.style.width="100%";
+missionCount.textContent="1/1";
+missionText.textContent="¡Imagen creada!";
+b.textContent="🎁 RECLAMAR RECOMPENSA";
+b.className="missionBtn claim";
+b.disabled=false;
+}
+else{
+progressFill.style.width="0%";
+missionCount.textContent="0/1";
+missionText.textContent="Genera una imagen temática";
+b.textContent="🎨 CREAR PARA LA MISIÓN";
+b.className="missionBtn";
+b.disabled=false;
+}
+}
+
+function missionAction(){
+registerAction();
+
+if(state.missionGenerated&&!state.missionClaimed){
+claimMission();
+return;
+}
+
+let t=getDailyTheme();
+
+prompt.value=
+"Crea una imagen de "+t.prompt+
+", alta calidad, muy detallada";
+
+prompt.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+showNotice(
+"✨ Misión preparada. Puedes personalizar la imagen.",
+"success"
+);
+}
+
+function claimMission(){
+if(!state.missionGenerated||state.missionClaimed)return;
+
+updateStreak();
+
+state.energy+=3;
+state.points+=20;
+state.missionClaimed=true;
+
+saveState();
+createConfetti();
+
+showNotice(
+"🎉 +3 Energía y +20 Puntos VIP.",
+"success"
+);
+}
+
+function updateStreak(){
+if(state.lastMissionDay===getYesterdayKey()){
+state.streak++;
+}
+else if(state.lastMissionDay!==getDayKey()){
+state.streak=1;
+}
+
+state.lastMissionDay=getDayKey();
+}
+
+async function generateImage(){
+let p=prompt.value.trim();
+let s=style.value;
+
+if(!p){
+showNotice("Escribe una descripción.","error");
+return;
+}
+
+registerAction();
+
+if(state.energy<=0){
+showNotice("No tienes Energía Magic.","error");
+return;
+}
+
+let finalPrompt=s?p+", "+s:p;
+
+generateBtn.disabled=true;
+generateBtn.textContent="✨ CREANDO MAGIA...";
+
+preview.innerHTML=`
+<div class="empty">
+<div class="loader"></div>
+<b>La IA está creando...</b>
+<p>Transformando tu idea en una imagen.</p>
+</div>
+`;
+
+try{
+
+let r=await fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+prompt:finalPrompt
+})
+});
+
+if(!r.ok){
+throw new Error("Servidor IA: "+r.status);
+}
+
+let ct=r.headers.get("content-type")||"";
+let url;
+
+if(ct.includes("application/json")){
+
+let d=await r.json();
+
+url=
+d.image||
+d.url||
+(Array.isArray(d.output)?d.output[0]:d.output);
+
+if(!url){
+throw new Error(
+d.error||
+d.message||
+"La IA no devolvió imagen."
+);
+}
+
+}else{
+
+let blob=await r.blob();
+
+if(!blob.type.startsWith("image/")){
+throw new Error("Respuesta de imagen no válida.");
+}
+
+url=URL.createObjectURL(blob);
+}
+
+currentImage=url;
+
+preview.innerHTML="";
+
+let img=document.createElement("img");
+img.src=url;
+img.alt="Creación Magic AI";
+
+preview.appendChild(img);
+
+imageActions.style.display="flex";
+
+state.energy--;
+
+checkMissionPrompt(p);
+addHistory(url,p);
+
+saveState();
+
+showNotice(
+"✨ Imagen creada correctamente.",
+"success"
+);
+
+}catch(e){
+
+preview.innerHTML=`
+<div class="empty">
+<div class="emptyIcon">⚠️</div>
+<b>No se pudo generar</b>
+<p>${escapeHTML(e.message)}</p>
+</div>
+`;
+
+showNotice(e.message,"error");
+
+}finally{
+
+generateBtn.disabled=false;
+generateBtn.textContent="✨ GENERAR IMAGEN · 1 ⚡";
+
+}
+}
+
+function checkMissionPrompt(p){
+if(state.missionGenerated||state.missionClaimed)return;
+
+let words=getDailyTheme()
+.prompt
+.toLowerCase()
+.split(/\s+/)
+.filter(w=>w.length>5);
+
+let userPrompt=p.toLowerCase();
+
+if(words.filter(w=>userPrompt.includes(w)).length>=2){
+state.missionGenerated=true;
+
+showNotice(
+"🎯 ¡Creación válida para la misión!",
+"success"
+);
+}
+}
+
+function addHistory(image,promptText){
+state.history.unshift({
+image:image,
+prompt:promptText,
+date:Date.now()
+});
+
+state.history=state.history.slice(0,8);
+}
+
+function renderHistory(){
+history.innerHTML="";
+
+if(!state.history.length){
+history.innerHTML=`
+<div style="grid-column:1/-1;color:#aaa2b7;font-size:13px">
+Aún no tienes creaciones.
+</div>
+`;
+return;
+}
+
+state.history.forEach(item=>{
+
+let d=document.createElement("div");
+d.className="historyItem";
+
+let i=document.createElement("img");
+i.src=item.image;
+
+i.onerror=()=>d.remove();
+
+i.onclick=()=>{
+currentImage=item.image;
+
+preview.innerHTML=
+'<img src="'+item.image+'" alt="Creación Magic AI">';
+
+imageActions.style.display="flex";
+
+preview.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+};
+
+d.appendChild(i);
+history.appendChild(d);
+
+});
+}
+
+async function downloadImage(){
+if(!currentImage)return;
+
+registerAction();
+
+try{
+
+let r=await fetch(currentImage);
+let blob=await r.blob();
+let url=URL.createObjectURL(blob);
+
+let a=document.createElement("a");
+
+a.href=url;
+a.download="magic-ai-"+Date.now()+".png";
+
+document.body.appendChild(a);
+a.click();
+a.remove();
+
+URL.revokeObjectURL(url);
+
+}catch{
+window.open(currentImage,"_blank");
+}
+}
+
+function reusePrompt(){
+registerAction();
+
+prompt.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+prompt.focus();
+}
+
+function randomBetween(min,max){
+return Math.floor(Math.random()*(max-min+1))+min;
+}
+
 function registerAction(){
- state.sessionActions=(state.sessionActions||0)+1;
- if(!state.firstPulseUnlocked&&state.sessionActions>=2){
-   state.firstPulseUnlocked=true;
-   state.pulseShowAt=Date.now()+FIRST_PULSE_DELAY;
- }
- saveState();
+state.sessionActions=(state.sessionActions||0)+1;
+
+if(!state.firstPulseUnlocked&&state.sessionActions>=2){
+state.firstPulseUnlocked=true;
+state.pulseShowAt=Date.now()+FIRST_PULSE_DELAY;
 }
+
+saveState();
+}
+
 function getRarity(){
- let r=Math.random()*100;
- if(r<10)return {name:"VIP",icon:"👑",vip:20,meterMin:35,meterMax:40,label:"VIP TALENT DETECTED"};
- if(r<40)return {name:"GOLDEN",icon:"💎",vip:15,meterMin:25,meterMax:35,label:"GOLDEN TALENT"};
- return {name:"MAGIC",icon:"💜",vip:10,meterMin:20,meterMax:30,label:"MAGIC TALENT"};
+let r=Math.random()*100;
+
+if(r<10){
+return {
+name:"VIP",
+icon:"👑",
+vip:20,
+meterMin:35,
+meterMax:40,
+label:"VIP TALENT DETECTED"
+};
 }
+
+if(r<40){
+return {
+name:"GOLDEN",
+icon:"💎",
+vip:15,
+meterMin:25,
+meterMax:35,
+label:"GOLDEN TALENT"
+};
+}
+
+return {
+name:"MAGIC",
+icon:"💜",
+vip:10,
+meterMin:20,
+meterMax:30,
+label:"MAGIC TALENT"
+};
+}
+
 function scheduleNextPulse(){
- state.nextPulseAt=Date.now()+randomBetween(5*60*1000,8*60*1000);
- state.pendingPulse=false;state.pulseShowAt=0;saveState();
+state.nextPulseAt=
+Date.now()+randomBetween(
+5*60*1000,
+8*60*1000
+);
+
+state.pendingPulse=false;
+state.pulseShowAt=0;
+
+saveState();
 }
+
 function checkMagicMissionDay(){
- let today=getDayKey();
- if(state.magicMissionDay!==today){state.magicMissionDay=today;state.dailyMagicMissions=0;saveState()}
+let today=getDayKey();
+
+if(state.magicMissionDay!==today){
+state.magicMissionDay=today;
+state.dailyMagicMissions=0;
+saveState();
 }
-function getRandomTalent(){if(TALENTOS.length===1){state.lastTalentIndex=0;return TALENTOS[0]}let i;do{i=Math.floor(Math.random()*TALENTOS.length)}while(i===state.lastTalentIndex);state.lastTalentIndex=i;localStorage.setItem("magicAIState",JSON.stringify(state));return TALENTOS[i]}
+}
+
+function getRandomTalent(){
+if(TALENTOS.length===1){
+state.lastTalentIndex=0;
+return TALENTOS[0];
+}
+
+let i;
+
+do{
+i=Math.floor(Math.random()*TALENTOS.length);
+}
+while(i===state.lastTalentIndex);
+
+state.lastTalentIndex=i;
+
+localStorage.setItem(
+"magicAIState",
+JSON.stringify(state)
+);
+
+return TALENTOS[i];
+}
+
 function showSpotlight(){
- checkMagicMissionDay();
- if(state.magicMission||state.dailyMagicMissions>=12)return;
- let t=getRandomTalent(),mode=Math.random()<.7&&t.publicaciones.length?"post":"profile",url=mode==="post"?t.publicaciones[Math.floor(Math.random()*t.publicaciones.length)]:t.perfil,rarity=getRarity();
- pendingMagicMission={talentIndex:TALENTOS.indexOf(t),talentName:t.nombre,username:t.usuario,mode,url,rarity};
- talentPhoto.src=t.foto;talentName.textContent=t.nombre;talentUsername.textContent=t.usuario;
- spotType.textContent=rarity.icon+" "+rarity.label;
- spotMessage.textContent=rarity.name==="VIP"?"Una aparición VIP ha llegado. Descubre este talento y activa una misión con recompensa especial.":mode==="post"?"Magic Pulse encontró una publicación destacada. Activa la misión y sigue creando mientras avanzan los 4 minutos.":"Magic Pulse detectó un talento. Descúbrelo y activa una misión paralela de 4 minutos.";
- spotReward.textContent="💎 +"+rarity.vip+" VIP · ✨ +"+rarity.meterMin+"–"+rarity.meterMax+"% Magic Meter";
- instagramBtn.textContent=rarity.name==="VIP"?"👑 ACTIVAR VIP MISSION":mode==="post"?"🔥 DESCUBRIR Y ACTIVAR":"✨ DESCUBRIR TALENTO";
- instagramBtn.onclick=startMagicMission;spotlightOverlay.classList.add("show");document.querySelector(".spotlight").classList.add("pulseGlow")
+checkMagicMissionDay();
+
+if(state.magicMission||state.dailyMagicMissions>=12)return;
+
+let t=getRandomTalent();
+
+let mode=
+Math.random()<.7&&t.publicaciones.length
+?"post"
+:"profile";
+
+let url=
+mode==="post"
+?t.publicaciones[
+Math.floor(Math.random()*t.publicaciones.length)
+]
+:t.perfil;
+
+let rarity=getRarity();
+
+pendingMagicMission={
+talentIndex:TALENTOS.indexOf(t),
+talentName:t.nombre,
+username:t.usuario,
+mode:mode,
+url:url,
+rarity:rarity
+};
+
+talentPhoto.src=t.foto;
+talentName.textContent=t.nombre;
+talentUsername.textContent=t.usuario;
+
+spotType.textContent=
+rarity.icon+" "+rarity.label;
+
+if(rarity.name==="VIP"){
+spotMessage.textContent=
+"Una aparición VIP ha llegado. Descubre este talento y activa una misión con recompensa especial.";
 }
-function startMagicMission(){if(!pendingMagicMission||state.magicMission)return;state.magicMission={...pendingMagicMission,startTime:Date.now(),endTime:Date.now()+MAGIC_MISSION_TIME,claimed:false};let url=state.magicMission.url;pendingMagicMission=null;scheduleNextPulse();saveState();closeSpotlight();window.open(url,"_blank","noopener");renderMagicMission()}
-function closeSpotlight(){spotlightOverlay.classList.remove("show");document.querySelector(".spotlight").classList.remove("pulseGlow");pendingMagicMission=null}
-function renderMagicMission(){let m=state.magicMission;if(!m){magicBar.classList.remove("show");return}magicBar.classList.add("show");activeMissionName.textContent="✨ Misión · "+m.talentName;let left=Math.max(0,m.endTime-Date.now()),done=left<=0,total=MAGIC_MISSION_TIME,elapsed=Math.min(total,total-left),pct=(elapsed/total)*100;magicTimer.textContent=formatTime(left);magicProgressFill.style.width=pct+"%";activeMissionMeta.textContent=done?"🎉 Misión terminada. Tu recompensa está lista.":((m.rarity?m.rarity.icon:"✨")+" "+(m.rarity?m.rarity.name:"MAGIC")+" · "+m.username);quickClaimBtn.style.display=done?"block":"none"}
-function formatTime(ms){let sec=Math.ceil(ms/1000),m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
+else if(mode==="post"){
+spotMessage.textContent=
+"Magic Pulse encontró una publicación destacada. Activa la misión y sigue creando mientras avanzan los 4 minutos.";
+}
+else{
+spotMessage.textContent=
+"Magic Pulse detectó un talento. Descúbrelo y activa una misión paralela de 4 minutos.";
+}
+
+spotReward.textContent=
+"💎 +"+rarity.vip+
+" VIP · ✨ +"+
+rarity.meterMin+
+"–"+
+rarity.meterMax+
+"% Magic Meter";
+
+instagramBtn.textContent=
+rarity.name==="VIP"
+?"👑 ACTIVAR VIP MISSION"
+:mode==="post"
+?"🔥 DESCUBRIR Y ACTIVAR"
+:"✨ DESCUBRIR TALENTO";
+
+instagramBtn.onclick=startMagicMission;
+
+spotlightOverlay.classList.add("show");
+
+document
+.querySelector(".spotlight")
+.classList.add("pulseGlow");
+}
+
+function startMagicMission(){
+if(!pendingMagicMission||state.magicMission)return;
+
+state.magicMission={
+...pendingMagicMission,
+startTime:Date.now(),
+endTime:Date.now()+MAGIC_MISSION_TIME,
+claimed:false
+};
+
+let url=state.magicMission.url;
+
+pendingMagicMission=null;
+
+scheduleNextPulse();
+saveState();
+closeSpotlight();
+
+window.open(url,"_blank","noopener");
+
+renderMagicMission();
+}
+
+function closeSpotlight(){
+spotlightOverlay.classList.remove("show");
+
+document
+.querySelector(".spotlight")
+.classList.remove("pulseGlow");
+
+pendingMagicMission=null;
+}
+
+function renderMagicMission(){
+let m=state.magicMission;
+
+if(!m){
+magicBar.classList.remove("show");
+return;
+}
+
+magicBar.classList.add("show");
+
+activeMissionName.textContent=
+"✨ Misión · "+m.talentName;
+
+let left=Math.max(
+0,
+m.endTime-Date.now()
+);
+
+let done=left<=0;
+
+let elapsed=
+Math.min(
+MAGIC_MISSION_TIME,
+MAGIC_MISSION_TIME-left
+);
+
+let pct=
+(elapsed/MAGIC_MISSION_TIME)*100;
+
+magicTimer.textContent=formatTime(left);
+
+magicProgressFill.style.width=pct+"%";
+
+activeMissionMeta.textContent=
+done
+?"🎉 Misión terminada. Tu recompensa está lista."
+:(m.rarity.icon+" "+m.rarity.name+" · "+m.username);
+
+quickClaimBtn.style.display=
+done?"block":"none";
+}
+
+function formatTime(ms){
+let sec=Math.ceil(ms/1000);
+let m=Math.floor(sec/60);
+let s=sec%60;
+
+return String(m).padStart(2,"0")+
+":"+
+String(s).padStart(2,"0");
+}
+
 function claimMagicMission(){
- let m=state.magicMission;if(!m||Date.now()<m.endTime)return;
- checkMagicMissionDay();
- let rarity=m.rarity||{vip:10,meterMin:20,meterMax:30,name:"MAGIC"};
- let meterGain=randomBetween(rarity.meterMin,rarity.meterMax);
- state.points+=rarity.vip;state.magicMeter=(state.magicMeter||0)+meterGain;state.dailyMagicMissions++;
- let boosted=false;
- if(state.magicMeter>=100){state.magicMeter-=100;state.energy+=2;state.points+=15;boosted=true}
- state.magicMission=null;saveState();createConfetti();
- showNotice(boosted?"⚡ MAGIC BOOST: +2 Energías y +15 VIP bonus.":"✨ +"+rarity.vip+" VIP y +"+meterGain+"% Magic Meter.","success");
- renderMagicMission();activeTime=0
+let m=state.magicMission;
+
+if(!m||Date.now()<m.endTime)return;
+
+checkMagicMissionDay();
+
+let rarity=m.rarity||{
+vip:10,
+meterMin:20,
+meterMax:30,
+name:"MAGIC"
+};
+
+let meterGain=randomBetween(
+rarity.meterMin,
+rarity.meterMax
+);
+
+state.points+=rarity.vip;
+state.magicMeter=(state.magicMeter||0)+meterGain;
+state.dailyMagicMissions++;
+
+let boosted=false;
+
+if(state.magicMeter>=100){
+state.magicMeter-=100;
+state.energy+=2;
+state.points+=15;
+boosted=true;
 }
+
+state.magicMission=null;
+
+saveState();
+createConfetti();
+
+if(boosted){
+showNotice(
+"⚡ MAGIC BOOST: +2 Energías y +15 VIP bonus.",
+"success"
+);
+}else{
+showNotice(
+"✨ +"+rarity.vip+
+" VIP y +"+
+meterGain+
+"% Magic Meter.",
+"success"
+);
+}
+
+renderMagicMission();
+}
+
 function startSpotlightSystem(){
- let wasHidden=document.hidden;
- document.addEventListener("visibilitychange",()=>{
-   if(wasHidden&&!document.hidden&&state.pendingPulse&&!state.magicMission){
-     state.pulseShowAt=Date.now()+randomBetween(RETURN_DELAY_MIN,RETURN_DELAY_MAX);saveState()
-   }
-   wasHidden=document.hidden
- });
- setInterval(()=>{
-   renderMagicMission();checkMagicMissionDay();
-   if(state.magicMission||spotlightOverlay.classList.contains("show")||state.dailyMagicMissions>=12)return;
-   let now=Date.now();
-   if(state.firstPulseUnlocked&&state.pulseShowAt&&now>=state.pulseShowAt&&!document.hidden){
-     state.pulseShowAt=0;saveState();showSpotlight();return
-   }
-   if(state.nextPulseAt&&now>=state.nextPulseAt){
-     if(document.hidden){state.pendingPulse=true;saveState()}
-     else{showSpotlight()}
-   }
- },1000)
+let wasHidden=document.hidden;
+
+document.addEventListener(
+"visibilitychange",
+()=>{
+
+if(
+wasHidden&&
+!document.hidden&&
+state.pendingPulse&&
+!state.magicMission
+){
+state.pulseShowAt=
+Date.now()+
+randomBetween(
+RETURN_DELAY_MIN,
+RETURN_DELAY_MAX
+);
+
+saveState();
 }
-function showNotice(message,type="error"){notice.textContent=message;notice.className="notice "+type;setTimeout(()=>notice.className="notice",5000)}
-function createConfetti(){let icons=["✨","💎","⭐","💜","⚡"];for(let i=0;i<25;i++){let e=document.createElement("div");e.className="confetti";e.textContent=icons[Math.floor(Math.random()*icons.length)];e.style.left=Math.random()*100+"vw";e.style.animationDelay=Math.random()*.7+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),3500)}}
-function escapeHTML(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-function updateUI(){energy.textContent=state.energy;points.textContent=state.points;meterHeader.textContent=Math.floor(state.magicMeter||0);meterPercent.textContent=Math.floor(state.magicMeter||0)+"%";meterFill.style.width=Math.min(100,state.magicMeter||0)+"%";meterText.textContent=(state.magicMeter||0)>=80?"⚡ ¡El Magic Boost está muy cerca!":"Completa Magic Missions para activar +2 Energías y +15 VIP.";renderMission();renderHistory();renderMagicMission()}
-checkNewDay();checkMagicMissionDay();updateUI();startSpotlightSystem();
+
+wasHidden=document.hidden;
+
+}
+);
+
+setInterval(()=>{
+
+renderMagicMission();
+checkMagicMissionDay();
+
+if(
+state.magicMission||
+spotlightOverlay.classList.contains("show")||
+state.dailyMagicMissions>=12
+)return;
+
+let now=Date.now();
+
+if(
+state.firstPulseUnlocked&&
+state.pulseShowAt&&
+now>=state.pulseShowAt&&
+!document.hidden
+){
+state.pulseShowAt=0;
+saveState();
+showSpotlight();
+return;
+}
+
+if(
+state.nextPulseAt&&
+now>=state.nextPulseAt
+){
+
+if(document.hidden){
+state.pendingPulse=true;
+saveState();
+}else{
+showSpotlight();
+}
+
+}
+
+},1000);
+}
+
+function showNotice(message,type="error"){
+notice.textContent=message;
+notice.className="notice "+type;
+
+setTimeout(()=>{
+notice.className="notice";
+},5000);
+}
+
+function createConfetti(){
+let icons=["✨","💎","⭐","💜","⚡"];
+
+for(let i=0;i<25;i++){
+
+let e=document.createElement("div");
+
+e.className="confetti";
+
+e.textContent=
+icons[
+Math.floor(Math.random()*icons.length)
+];
+
+e.style.left=
+Math.random()*100+"vw";
+
+e.style.animationDelay=
+Math.random()*.7+"s";
+
+document.body.appendChild(e);
+
+setTimeout(()=>{
+e.remove();
+},3500);
+
+}
+}
+
+function escapeHTML(v){
+return String(v)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+}
+
+function updateUI(){
+energy.textContent=state.energy;
+points.textContent=state.points;
+
+meterHeader.textContent=
+Math.floor(state.magicMeter||0);
+
+meterPercent.textContent=
+Math.floor(state.magicMeter||0)+"%";
+
+meterFill.style.width=
+Math.min(100,state.magicMeter||0)+"%";
+
+meterText.textContent=
+(state.magicMeter||0)>=80
+?"⚡ ¡El Magic Boost está muy cerca!"
+:"Completa Magic Missions para activar +2 Energías y +15 VIP.";
+
+renderMission();
+renderHistory();
+renderMagicMission();
+}
+
+checkNewDay();
+checkMagicMissionDay();
+updateUI();
+startSpotlightSystem();
 </script>
+
 </body>
 </html>
