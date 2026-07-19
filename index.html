@@ -642,58 +642,15 @@ generateBtn.disabled=true;
 try{
 
 
-let form =
-new FormData();
-
-
-
 let finalPrompt =
 `${prompt}, estilo ${selectedStyle}`;
 
 
-
-form.append(
-"prompt",
-finalPrompt
-);
+let body = {
+    prompt: finalPrompt
+};
 
 
-
-
-
-if(mode==="edit"){
-
-
-if(!imageInput.files[0]){
-
-
-alert(
-"Sube una imagen para editar"
-);
-
-
-loader.style.display="none";
-generateBtn.disabled=false;
-
-return;
-
-
-}
-
-
-
-let compressed =
-await compressImage(
-imageInput.files[0]
-);
-
-
-
-form.append(
-"image",
-compressed,
-"image.jpg"
-);
 
 
 }
@@ -713,15 +670,14 @@ let response =
 await fetch(
 WORKER_URL + endpoint,
 {
-
 method:"POST",
-
-body:form
+headers:{
+    "Content-Type":"application/json"
+},
+body:JSON.stringify(body)
 
 }
-
 );
-
 
 
 
