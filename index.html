@@ -1,1 +1,1066 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Magic AI Editor</title><style>body{margin:0;background:#111;color:#fff;font-family:Arial;display:flex;justify-content:center}.card{max-width:720px;width:100%;margin:30px;padding:24px;background:#1d1d2e;border-radius:16px}.drop{border:2px dashed #8b5cf6;padding:30px;text-align:center;cursor:pointer}img{max-width:100%;display:none;margin-top:12px}textarea,button{width:100%;margin-top:12px;padding:12px}#loader{display:none}</style></head><body><div class=card><h1>Magic AI Editor</h1><input id=file type=file hidden accept=image/*><div class=drop onclick='file.click()'>📷 Seleccionar imagen</div><img id=preview><textarea id=prompt placeholder='Describe la edición'></textarea><button onclick='editImage()'>✨ Editar imagen</button><div id=loader>Procesando...</div></div><script>file.onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{preview.src=r.result;preview.style.display='block'};r.readAsDataURL(f)};async function editImage(){let f=file.files[0],p=prompt.value.trim();if(!f||!p){alert('Falta imagen o descripción');return;}loader.style.display='block';let fd=new FormData();fd.append('image',f);fd.append('prompt',p);try{let res=await fetch('https://magic-ai-studio.anedilone27.workers.dev/generate',{method:'POST',body:fd});if(!res.ok)throw new Error(await res.text());let b=await res.blob();preview.src=URL.createObjectURL(b);preview.style.display='block';}catch(e){alert(e.message)}loader.style.display='none';}</script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Magic AI Studio V2</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif
+}
+
+body{
+background:#070712;
+color:white;
+min-height:100vh;
+}
+
+
+header{
+height:70px;
+background:#111126;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 25px;
+border-bottom:1px solid #29294d;
+}
+
+
+.logo{
+font-size:25px;
+font-weight:900;
+background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+
+.credit{
+background:#1b1b35;
+padding:10px 18px;
+border-radius:30px;
+border:1px solid #34345e;
+}
+
+
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:25px;
+}
+
+
+.grid{
+display:grid;
+grid-template-columns:360px 1fr;
+gap:25px;
+}
+
+
+
+.card{
+background:#111126;
+border:1px solid #29294d;
+border-radius:20px;
+padding:20px;
+}
+
+
+
+h2{
+margin-bottom:20px;
+}
+
+
+
+.modes{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+
+.modes button{
+
+flex:1;
+padding:12px;
+border:0;
+border-radius:12px;
+background:#202040;
+color:white;
+cursor:pointer;
+
+}
+
+
+.active{
+
+background:linear-gradient(90deg,#7c3aed,#06b6d4)!important;
+
+}
+
+
+
+textarea{
+
+width:100%;
+height:120px;
+background:#080816;
+color:white;
+border:1px solid #33335c;
+border-radius:15px;
+padding:15px;
+resize:none;
+}
+
+
+
+.styles{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:15px;
+
+}
+
+
+
+.styles button{
+
+padding:10px;
+background:#191932;
+border:1px solid #33335c;
+color:white;
+border-radius:10px;
+cursor:pointer;
+
+}
+
+
+.selected{
+
+background:#7c3aed!important;
+
+}
+
+
+
+.upload{
+
+margin-top:20px;
+border:2px dashed #45457a;
+padding:20px;
+text-align:center;
+border-radius:15px;
+
+}
+
+
+
+input{
+
+margin-top:10px;
+width:100%;
+
+}
+
+
+
+.generate{
+
+margin-top:20px;
+width:100%;
+padding:15px;
+border:0;
+border-radius:15px;
+font-size:18px;
+font-weight:bold;
+background:linear-gradient(90deg,#8b5cf6,#06b6d4);
+color:white;
+cursor:pointer;
+
+}
+
+
+
+.loader{
+
+display:none;
+text-align:center;
+margin-top:15px;
+color:#aaa;
+
+}
+
+
+
+.result{
+
+height:550px;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#080816;
+overflow:hidden;
+
+}
+
+
+
+.result img{
+
+max-width:100%;
+max-height:100%;
+border-radius:15px;
+
+}
+
+
+
+.placeholder{
+
+color:#777;
+
+}
+
+
+
+.download{
+
+display:none;
+margin-top:15px;
+width:100%;
+padding:12px;
+border-radius:12px;
+background:#22c55e;
+color:white;
+border:0;
+cursor:pointer;
+
+}
+
+
+
+.gallery{
+
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+gap:15px;
+
+}
+
+
+
+.gallery img{
+
+width:100%;
+border-radius:12px;
+cursor:pointer;
+
+}
+
+
+
+@media(max-width:850px){
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+.result{
+
+height:400px;
+
+}
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="logo">
+✨ Magic AI Studio
+</div>
+
+
+<div class="credit">
+Créditos:
+<span id="credits">10</span>
+</div>
+
+</header>
+
+
+
+<div class="container">
+
+
+<div class="grid">
+
+
+
+<div class="card">
+
+
+<h2>
+Generador IA
+</h2>
+
+
+
+<div class="modes">
+
+<button id="createBtn" class="active">
+Crear
+</button>
+
+<button id="editBtn">
+Editar
+</button>
+
+
+</div>
+
+
+
+<textarea id="prompt"
+placeholder="Describe la imagen que quieres crear...">
+</textarea>
+
+
+
+<div class="styles">
+
+
+<button class="style">
+Editorial
+</button>
+
+<button class="style">
+Anime
+</button>
+
+<button class="style">
+Retro
+</button>
+
+<button class="style">
+Comic
+</button>
+
+<button class="style">
+Cyberpunk
+</button>
+
+<button class="style">
+Luxury
+</button>
+
+
+</div>
+
+
+
+<div class="upload">
+
+Imagen para editar
+
+<input 
+type="file"
+id="imageInput"
+accept="image/*">
+
+</div>
+
+
+
+<button class="generate" id="generateBtn">
+
+GENERAR
+
+</button>
+
+
+
+<div class="loader" id="loader">
+
+Creando imagen...
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<div class="card result" id="result">
+
+<div class="placeholder">
+
+Aquí aparecerá tu imagen
+
+</div>
+
+</div>
+
+
+<button class="download" id="downloadBtn">
+
+Descargar imagen
+
+</button>
+
+
+
+<div class="card">
+
+<h2>
+Historial
+</h2>
+
+
+<div class="gallery" id="gallery">
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+const WORKER_URL =
+"https://magic-ai-studio.anedilone27.workers.dev";
+
+
+let mode = "create";
+let selectedStyle = "";
+let currentImage = "";
+
+
+// =========================
+// CRÉDITOS
+// =========================
+
+let credits =
+localStorage.getItem("magicCredits");
+
+if(!credits){
+
+    credits = 10;
+    localStorage.setItem(
+        "magicCredits",
+        credits
+    );
+
+}
+
+document.getElementById("credits").textContent =
+credits;
+
+
+
+// =========================
+// ELEMENTOS
+// =========================
+
+const createBtn =
+document.getElementById("createBtn");
+
+const editBtn =
+document.getElementById("editBtn");
+
+const generateBtn =
+document.getElementById("generateBtn");
+
+const promptInput =
+document.getElementById("prompt");
+
+const imageInput =
+document.getElementById("imageInput");
+
+const result =
+document.getElementById("result");
+
+const loader =
+document.getElementById("loader");
+
+const downloadBtn =
+document.getElementById("downloadBtn");
+
+const gallery =
+document.getElementById("gallery");
+
+
+
+
+// =========================
+// CAMBIO DE MODO
+// =========================
+
+
+createBtn.onclick=()=>{
+
+mode="create";
+
+createBtn.classList.add("active");
+editBtn.classList.remove("active");
+
+};
+
+
+editBtn.onclick=()=>{
+
+mode="edit";
+
+editBtn.classList.add("active");
+createBtn.classList.remove("active");
+
+};
+
+
+
+
+// =========================
+// ESTILOS
+// =========================
+
+document.querySelectorAll(".style")
+.forEach(btn=>{
+
+
+btn.onclick=()=>{
+
+
+document.querySelectorAll(".style")
+.forEach(x=>
+x.classList.remove("selected")
+);
+
+
+btn.classList.add("selected");
+
+
+selectedStyle =
+btn.innerText;
+
+
+};
+
+
+});
+
+
+
+
+// =========================
+// GENERAR
+// =========================
+
+
+generateBtn.onclick = async()=>{
+
+
+let prompt =
+promptInput.value.trim();
+
+
+
+if(!prompt){
+
+alert(
+"Escribe un prompt primero"
+);
+
+return;
+
+}
+
+
+
+let credits =
+Number(
+localStorage.getItem("magicCredits")
+);
+
+
+
+if(credits<=0){
+
+alert(
+"No tienes créditos"
+);
+
+return;
+
+}
+
+
+
+loader.style.display="block";
+
+
+generateBtn.disabled=true;
+
+
+
+try{
+
+
+let form =
+new FormData();
+
+
+
+let finalPrompt =
+`${prompt}, estilo ${selectedStyle}`;
+
+
+
+form.append(
+"prompt",
+finalPrompt
+);
+
+
+
+
+
+if(mode==="edit"){
+
+
+if(!imageInput.files[0]){
+
+
+alert(
+"Sube una imagen para editar"
+);
+
+
+loader.style.display="none";
+generateBtn.disabled=false;
+
+return;
+
+
+}
+
+
+
+let compressed =
+await compressImage(
+imageInput.files[0]
+);
+
+
+
+form.append(
+"image",
+compressed,
+"image.jpg"
+);
+
+
+}
+
+
+
+
+let endpoint =
+mode==="create"
+? "/generate"
+: "/edit";
+
+
+
+
+let response =
+await fetch(
+WORKER_URL + endpoint,
+{
+
+method:"POST",
+
+body:form
+
+}
+
+);
+
+
+
+
+
+if(!response.ok){
+
+
+let error =
+await response.text();
+
+
+throw new Error(error);
+
+
+}
+
+
+
+
+let blob =
+await response.blob();
+
+
+
+let url =
+URL.createObjectURL(blob);
+
+
+
+showImage(url);
+
+
+
+credits--;
+
+
+localStorage.setItem(
+"magicCredits",
+credits
+);
+
+
+
+document.getElementById(
+"credits"
+).textContent =
+credits;
+
+
+
+
+saveHistory(url);
+
+
+
+}
+catch(e){
+
+
+console.error(e);
+
+
+alert(
+"Error: "+e.message
+);
+
+
+}
+finally{
+
+
+loader.style.display="none";
+
+generateBtn.disabled=false;
+
+
+}
+
+
+};
+
+
+
+
+// =========================
+// MOSTRAR IMAGEN
+// =========================
+
+
+function showImage(url){
+
+
+currentImage=url;
+
+
+result.innerHTML =
+`
+<img src="${url}">
+`;
+
+
+downloadBtn.style.display="block";
+
+
+}
+
+
+
+// =========================
+// DESCARGAR
+// =========================
+
+
+downloadBtn.onclick=()=>{
+
+
+let a =
+document.createElement("a");
+
+
+a.href=currentImage;
+
+
+a.download=
+"Magic_AI_Image.png";
+
+
+a.click();
+
+
+};
+
+
+
+
+// =========================
+// HISTORIAL LOCAL
+// =========================
+
+
+function saveHistory(url){
+
+
+let history =
+JSON.parse(
+localStorage.getItem(
+"magicHistory"
+)
+||"[]"
+);
+
+
+
+history.unshift(url);
+
+
+
+history =
+history.slice(0,12);
+
+
+
+localStorage.setItem(
+"magicHistory",
+JSON.stringify(history)
+);
+
+
+
+loadHistory();
+
+
+}
+
+
+
+
+function loadHistory(){
+
+
+let history =
+JSON.parse(
+localStorage.getItem(
+"magicHistory"
+)
+||"[]"
+);
+
+
+
+gallery.innerHTML="";
+
+
+
+history.forEach(img=>{
+
+
+let image =
+document.createElement("img");
+
+
+image.src=img;
+
+
+
+image.onclick=()=>{
+
+showImage(img);
+
+};
+
+
+
+gallery.appendChild(image);
+
+
+
+});
+
+
+}
+
+
+loadHistory();
+
+
+
+
+// =========================
+// COMPRESIÓN DE IMAGEN
+// =========================
+
+
+function compressImage(file){
+
+
+return new Promise(resolve=>{
+
+
+let img =
+new Image();
+
+
+
+let reader =
+new FileReader();
+
+
+
+reader.onload=e=>{
+
+
+img.onload=()=>{
+
+
+let canvas =
+document.createElement(
+"canvas"
+);
+
+
+
+let max =
+1024;
+
+
+
+let scale =
+Math.min(
+max/img.width,
+max/img.height,
+1
+);
+
+
+
+canvas.width =
+img.width*scale;
+
+
+canvas.height =
+img.height*scale;
+
+
+
+let ctx =
+canvas.getContext(
+"2d"
+);
+
+
+
+ctx.drawImage(
+img,
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+
+canvas.toBlob(
+blob=>{
+
+
+resolve(blob);
+
+
+},
+"image/jpeg",
+0.85
+);
+
+
+
+};
+
+
+
+img.src=e.target.result;
+
+
+};
+
+
+
+reader.readAsDataURL(file);
+
+
+
+});
+
+
+}
+
+
+
+</script>
+
+</body>
+</html>
